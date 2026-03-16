@@ -58,7 +58,8 @@
       "🍱 Tiffin & food services",
       "💆 Salons & parlours",
       "🛠️ Repair & service shops",
-      "📦 Street & market vendors"
+      "📦 Street & market vendors",
+      "clinic & doctor"
     ]
   },
   "stats": [
@@ -199,7 +200,7 @@
     "plans": [
       {
         "tier": "Starter",
-        "amount": "299",
+        "amount": "3,999",
         "note": "one-time setup fee",
         "featured": false,
         "badge": "",
@@ -214,7 +215,7 @@
       },
       {
         "tier": "Growth",
-        "amount": "499",
+        "amount": "7,999",
         "note": "one-time setup fee",
         "featured": true,
         "badge": "Most popular",
@@ -230,7 +231,7 @@
       },
       {
         "tier": "Monthly Care",
-        "amount": "199",
+        "amount": "999",
         "note": "per month — add to any plan",
         "featured": false,
         "badge": "",
