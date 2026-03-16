@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Services — Flowmatic</title>
+<meta name="description" content="Websites, Google Maps, WhatsApp bots and AI automation for small shops across India. Simple, affordable, done for you."/>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--pop:#d4522a;--pop2:#e8a87c;--ink:#0a0a0a;--ink2:#3a3a3a;--bg:#faf9f6;--bg2:#f2f0eb;--bg3:#e8e5de;--r:12px;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 2.5rem;background:rgba(250,249,246,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,0,0,.07);}
+.logo{font-family:'Instrument Serif',serif;font-size:1.4rem;text-decoration:none;color:var(--ink);}.logo span{color:var(--pop);}
+.nav-links{display:flex;align-items:center;gap:2rem;list-style:none;}
+.nav-links a{text-decoration:none;font-size:.875rem;font-weight:500;color:var(--ink2);transition:color .2s;}
+.nav-links a:hover,.nav-links a.active{color:var(--pop);}
+.nav-cta{background:var(--ink);color:#fff!important;padding:.5rem 1.25rem;border-radius:100px;}
+.nav-cta:hover{background:var(--pop)!important;}
+
+/* HERO */
+.svc-hero{padding:7rem 2.5rem 4.5rem;text-align:center;background:var(--bg);}
+.label{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--pop);margin-bottom:1rem;}
+.svc-hero h1{font-family:'Instrument Serif',serif;font-size:clamp(2.2rem,5vw,3.5rem);line-height:1.1;letter-spacing:-.03em;margin-bottom:1rem;}
+.svc-hero p{font-size:1rem;color:var(--ink2);max-width:520px;margin:0 auto;line-height:1.7;font-weight:300;}
+
+/* SERVICE SECTIONS */
+.svc-section{padding:4rem 2.5rem;max-width:1000px;margin:0 auto;}
+.svc-section:nth-child(even){background:var(--bg2);max-width:100%;padding:4rem 2.5rem;}
+.svc-section:nth-child(even) .svc-inner{max-width:1000px;margin:0 auto;}
+.svc-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;}
+.svc-grid.reverse{direction:rtl;}.svc-grid.reverse>*{direction:ltr;}
+.svc-visual{background:var(--bg3);border-radius:16px;padding:2rem;display:flex;align-items:center;justify-content:center;min-height:220px;font-size:5rem;position:relative;overflow:hidden;}
+.svc-visual::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 70% 30%,rgba(212,82,42,.12),transparent 60%);}
+.svc-content .svc-tag{display:inline-flex;align-items:center;gap:.4rem;background:var(--bg2);border:1px solid var(--bg3);border-radius:100px;padding:.3rem .85rem;font-size:.72rem;font-weight:600;color:var(--ink2);margin-bottom:1rem;}
+.svc-content h2{font-family:'Instrument Serif',serif;font-size:clamp(1.6rem,3vw,2.2rem);line-height:1.15;margin-bottom:.75rem;}
+.svc-content p{color:var(--ink2);line-height:1.75;font-weight:300;font-size:.95rem;margin-bottom:1rem;}
+.svc-content p:last-of-type{margin-bottom:1.5rem;}
+.included-list{list-style:none;display:grid;gap:.5rem;margin-bottom:1.5rem;}
+.included-list li{display:flex;gap:.6rem;font-size:.875rem;color:var(--ink2);align-items:flex-start;}
+.included-list li::before{content:'✓';color:var(--pop);font-weight:700;flex-shrink:0;margin-top:.05rem;}
+.price-chip{display:inline-block;background:var(--ink);color:#fff;padding:.4rem 1rem;border-radius:100px;font-size:.8rem;font-weight:600;margin-right:.5rem;}
+.svc-btn{display:inline-block;background:var(--pop);color:#fff;padding:.7rem 1.5rem;border-radius:100px;font-size:.875rem;font-weight:600;text-decoration:none;transition:all .2s;}
+.svc-btn:hover{background:#c0431e;transform:translateY(-1px);}
+
+/* PRICING TABLE */
+.pricing-section{padding:5rem 2.5rem;background:var(--bg);}
+.pricing-section h2{font-family:'Instrument Serif',serif;font-size:clamp(1.8rem,4vw,2.8rem);text-align:center;margin-bottom:.5rem;}
+.pricing-section .sub{text-align:center;color:var(--ink2);font-size:.9rem;margin-bottom:3rem;font-weight:300;}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;max-width:960px;margin:0 auto;}
+.price-card{background:#fff;border-radius:var(--r);border:1px solid var(--bg3);padding:2rem;}
+.price-card.featured{border:2px solid var(--pop);background:var(--ink);color:#fff;}
+.price-badge{display:inline-block;background:var(--pop);color:#fff;font-size:.65rem;font-weight:700;padding:.2rem .65rem;border-radius:100px;margin-bottom:1rem;}
+.price-tier{font-size:.75rem;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.4rem;}
+.price-card.featured .price-tier{color:rgba(255,255,255,.4);}
+.price-amount{font-family:'Instrument Serif',serif;font-size:2.5rem;letter-spacing:-.03em;line-height:1;margin-bottom:.25rem;}
+.price-note{font-size:.78rem;color:#888;margin-bottom:1.5rem;}
+.price-card.featured .price-note{color:rgba(255,255,255,.4);}
+.price-card.featured .price-amount{color:#fff;}
+.price-list{list-style:none;display:grid;gap:.6rem;margin-bottom:1.75rem;}
+.price-list li{font-size:.85rem;color:var(--ink2);display:flex;gap:.5rem;align-items:flex-start;}
+.price-card.featured .price-list li{color:rgba(255,255,255,.75);}
+.price-list li::before{content:'✓';color:var(--pop);font-weight:700;flex-shrink:0;}
+.price-card.featured .price-list li::before{color:var(--pop2);}
+.price-cta{display:block;width:100%;padding:.75rem;border-radius:100px;font-weight:600;font-size:.875rem;cursor:pointer;border:1.5px solid var(--bg3);background:transparent;color:var(--ink);transition:all .2s;font-family:'DM Sans',sans-serif;text-align:center;text-decoration:none;}
+.price-cta:hover{background:var(--bg2);border-color:var(--ink);}
+.price-card.featured .price-cta{background:var(--pop);color:#fff;border-color:var(--pop);}
+.price-card.featured .price-cta:hover{background:#c0431e;}
+
+/* FAQ */
+.faq-section{padding:5rem 2.5rem;background:var(--bg2);max-width:100%;}
+.faq-inner{max-width:680px;margin:0 auto;}
+.faq-section h2{font-family:'Instrument Serif',serif;font-size:clamp(1.8rem,4vw,2.5rem);text-align:center;margin-bottom:2.5rem;}
+.faq-item{border-bottom:1px solid var(--bg3);padding:1.1rem 0;}
+.faq-q{display:flex;justify-content:space-between;align-items:center;cursor:pointer;gap:1rem;}
+.faq-q span{font-size:.95rem;font-weight:500;}
+.faq-q .faq-arrow{font-size:1.1rem;color:var(--pop);transition:transform .2s;flex-shrink:0;}
+.faq-a{font-size:.875rem;color:var(--ink2);line-height:1.7;font-weight:300;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .2s;}
+.faq-item.open .faq-a{max-height:200px;padding-top:.75rem;}
+.faq-item.open .faq-arrow{transform:rotate(45deg);}
+
+footer{background:#050505;color:rgba(255,255,255,.35);padding:2rem 2.5rem;display:flex;align-items:center;justify-content:space-between;font-size:.8rem;flex-wrap:wrap;gap:1rem;}
+
+@media(max-width:768px){
+  nav{padding:.9rem 1.25rem;}.nav-links{display:none;}
+  .svc-hero{padding:5.5rem 1.25rem 3rem;}
+  .svc-section{padding:3rem 1.25rem;}
+  .svc-grid,.svc-grid.reverse{grid-template-columns:1fr;direction:ltr;}
+  .pricing-grid{grid-template-columns:1fr;}
+  .pricing-section,.faq-section{padding:3.5rem 1.25rem;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="logo">flow<span>matic</span></a>
+  <ul class="nav-links">
+    <li><a href="../index.html#how">How it works</a></li>
+    <li><a href="services.html" class="active">Services</a></li>
+    <li><a href="portfolio.html">Our Work</a></li>
+    <li><a href="contact.html" class="nav-cta">Get in touch</a></li>
+  </ul>
+</nav>
+
+<div class="svc-hero">
+  <div class="label">Services</div>
+  <h1>Everything your shop<br>needs to grow online</h1>
+  <p>Done-for-you digital setup — no tech knowledge needed, no jargon, no surprises.</p>
+</div>
+
+<!-- SERVICE 1 -->
+<div style="background:var(--bg);padding:4rem 2.5rem;">
+  <div style="max-width:1000px;margin:0 auto;">
+  <div class="svc-grid">
+    <div class="svc-visual">🌐</div>
+    <div class="svc-content">
+      <div class="svc-tag">🌐 Website</div>
+      <h2>A real website<br>for your shop</h2>
+      <p>A clean, fast, mobile-friendly website that shows customers exactly what you offer — your products, services, timings, location, and how to reach you.</p>
+      <p>I build it, I upload it, I make sure it works. You just tell me about your shop.</p>
+      <ul class="included-list">
+        <li>Mobile-first design that works on every phone</li>
+        <li>Your shop's story, services & contact details</li>
+        <li>WhatsApp click-to-chat button</li>
+        <li>Contact & enquiry form</li>
+        <li>Fast-loading on Indian mobile networks</li>
+      </ul>
+      <span class="price-chip">From ₹3,999</span>
+      <a href="contact.html?plan=Starter+%E2%80%94+%E2%82%B93%2C999" class="svc-btn">Get a website →</a>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- SERVICE 2 -->
+<div style="background:var(--bg2);padding:4rem 2.5rem;">
+  <div style="max-width:1000px;margin:0 auto;">
+  <div class="svc-grid reverse">
+    <div class="svc-visual">📍</div>
+    <div class="svc-content">
+      <div class="svc-tag">📍 Google Maps</div>
+      <h2>Google Maps &amp;<br>Business listing</h2>
+      <p>When someone nearby searches "salon near me" or "kirana store in Maninagar" — your shop should appear. I set up and optimise your Google Business Profile so it does.</p>
+      <p>This single setup can bring you new customers every week for free, with zero ongoing effort from you.</p>
+      <ul class="included-list">
+        <li>Full Google Business Profile setup</li>
+        <li>Photos, hours, services & description</li>
+        <li>Google Maps pin verified and live</li>
+        <li>Review strategy so you rank higher</li>
+        <li>Local SEO optimisation</li>
+      </ul>
+      <span class="price-chip">Included in all plans</span>
+      <a href="contact.html?msg=I+am+interested+in+Google+Maps+%26+Business+listing+setup" class="svc-btn">Get on Google Maps →</a>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- SERVICE 3 -->
+<div style="background:var(--bg);padding:4rem 2.5rem;">
+  <div style="max-width:1000px;margin:0 auto;">
+  <div class="svc-grid">
+    <div class="svc-visual">💬</div>
+    <div class="svc-content">
+      <div class="svc-tag">💬 WhatsApp Bot</div>
+      <h2>WhatsApp<br>auto-reply bot</h2>
+      <p>Customers message your shop on WhatsApp at midnight — your bot instantly replies with your menu, prices, timings, or booking details. No phone needed.</p>
+      <p>Never miss a lead again, even when you're asleep or busy serving other customers.</p>
+      <ul class="included-list">
+        <li>Instant auto-replies 24/7</li>
+        <li>Shares menu, price list, or services</li>
+        <li>Captures name & requirement</li>
+        <li>Notifies you of new enquiries</li>
+        <li>Easy to update without any coding</li>
+      </ul>
+      <span class="price-chip">Included in Growth plan</span>
+      <a href="contact.html?plan=Growth+%E2%80%94+%E2%82%B97%2C999+one-time" class="svc-btn">Get a WhatsApp bot →</a>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- SERVICE 4 -->
+<div style="background:var(--bg2);padding:4rem 2.5rem 5rem;">
+  <div style="max-width:1000px;margin:0 auto;">
+  <div class="svc-grid reverse">
+    <div class="svc-visual">🤖</div>
+    <div class="svc-content">
+      <div class="svc-tag">🤖 AI Automation</div>
+      <h2>Simple AI tools<br>for daily tasks</h2>
+      <p>Small automations that actually save you time every day — automatically sending order confirmations, collecting reviews from happy customers, notifying regulars about new offers.</p>
+      <p>Nothing complicated. Just practical tools that work quietly in the background.</p>
+      <ul class="included-list">
+        <li>Order confirmation messages</li>
+        <li>Automated review requests</li>
+        <li>New offer notifications to repeat customers</li>
+        <li>Enquiry sorting & tagging</li>
+        <li>Monthly report on your leads</li>
+      </ul>
+      <span class="price-chip">Add-on from ₹999/mo</span>
+      <a href="contact.html?msg=I+am+interested+in+AI+automation+for+my+shop" class="svc-btn">Automate my shop →</a>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- PRICING -->
+<div class="pricing-section">
+  <h2>Simple, honest pricing</h2>
+  <p class="sub">No hidden charges. No lock-ins. Pay once, get online.</p>
+  <div class="pricing-grid">
+    <div class="price-card">
+      <div class="price-tier">Starter</div>
+      <div class="price-amount">₹3,999</div>
+      <div class="price-note">one-time setup fee</div>
+      <ul class="price-list">
+        <li>Single-page website</li>
+        <li>Mobile-friendly design</li>
+        <li>Google Business listing</li>
+        <li>Contact & enquiry form</li>
+        <li>WhatsApp click-to-chat</li>
+      </ul>
+      <a href="contact.html?plan=Starter+%E2%80%94+%E2%82%B93%2C999+one-time" class="price-cta">Get started</a>
+    </div>
+    <div class="price-card featured">
+      <div class="price-badge">Most popular</div>
+      <div class="price-tier">Growth</div>
+      <div class="price-amount">₹7,999</div>
+      <div class="price-note">one-time setup fee</div>
+      <ul class="price-list">
+        <li>Multi-page website</li>
+        <li>Product or menu showcase</li>
+        <li>Google Maps + reviews</li>
+        <li>WhatsApp AI auto-reply bot</li>
+        <li>Basic SEO</li>
+        <li>1 month free support</li>
+      </ul>
+      <a href="contact.html?plan=Growth+%E2%80%94+%E2%82%B97%2C999+one-time" class="price-cta">Get started</a>
+    </div>
+    <div class="price-card">
+      <div class="price-tier">Monthly Care</div>
+      <div class="price-amount">₹999</div>
+      <div class="price-note">per month — add to any plan</div>
+      <ul class="price-list">
+        <li>Update products & offers</li>
+        <li>Keep Google listing fresh</li>
+        <li>Monthly check-in</li>
+        <li>Priority WhatsApp support</li>
+      </ul>
+      <a href="contact.html?plan=Monthly+Care+%E2%80%94+%E2%82%B9999%2Fmonth" class="price-cta">Add to any plan</a>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="faq-section">
+  <div class="faq-inner">
+    <h2>Common questions</h2>
+    <div class="faq-item">
+      <div class="faq-q"><span>How long does it take to go live?</span><span class="faq-arrow">+</span></div>
+      <div class="faq-a">Most shops go live within 3–7 days from our first conversation. I handle everything — you just review and approve.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span>Do I need to know anything about technology?</span><span class="faq-arrow">+</span></div>
+      <div class="faq-a">Zero. You just tell me about your shop in plain language — what you sell, who your customers are, what you want to show online. I handle all the technical work.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span>Can I update the website myself later?</span><span class="faq-arrow">+</span></div>
+      <div class="faq-a">Yes — or I can do it for you with the Monthly Care plan. Small updates like changing prices, adding photos, or updating timings are included in the care plan.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span>What if I already have a Google listing?</span><span class="faq-arrow">+</span></div>
+      <div class="faq-a">Even better — I'll optimise what you already have: add photos, fill in missing information, respond to reviews, and make sure it ranks for the right local searches.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span>Are there any hidden charges?</span><span class="faq-arrow">+</span></div>
+      <div class="faq-a">None. The price I quote is what you pay. If you need hosting (usually ₹500–1,000/year), I'll tell you upfront and help you set it up at the best rate.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q"><span>What types of businesses do you work with?</span><span class="faq-arrow">+</span></div>
+      <div class="faq-a">Any small local business — kirana stores, salons, tiffin services, clothing shops, repair shops, street vendors, pharmacies, coaching classes, and more. If you have customers, I can help you reach more of them.</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <a href="../index.html" style="font-family:'Instrument Serif',serif;font-size:1.1rem;text-decoration:none;color:rgba(255,255,255,.6);">flow<span style="color:var(--pop)">matic</span></a>
+  <div>© 2025 Flowmatic</div>
+  <div style="display:flex;gap:1.5rem;">
+    <a href="mailto:ashishkushwaha88643@gmail.com" style="color:rgba(255,255,255,.35);text-decoration:none;">hello@bizautomate.io</a>
+    <a href="https://wa.me/919773174942" style="color:rgba(255,255,255,.35);text-decoration:none;">WhatsApp</a>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('.faq-item').forEach(function(item) {
+  item.querySelector('.faq-q').addEventListener('click', function() {
+    var wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(function(i) { i.classList.remove('open'); });
+    if (!wasOpen) item.classList.add('open');
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta http-equiv="Cache-Control" content="no-cache,no-store,must-revalidate"/>
+<title>Flowmatic Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="admin.css"/>
+<style>
+/* ── Extra styles for preview overlay + new features ── */
+.save-indicator{display:flex;align-items:center;gap:.5rem;font-size:.75rem;color:var(--t3);padding:.4rem .5rem;}
+.save-dot{width:7px;height:7px;border-radius:50%;background:var(--t3);flex-shrink:0;}
+.save-dot.saved{background:var(--green);}
+.save-dot.saving{background:var(--pop2);animation:blink 1s infinite;}
+.save-dot.error{background:#e24b4a;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+
+.sidebar-foot{padding:.6rem;border-top:1px solid var(--b1);display:flex;flex-direction:column;gap:.4rem;}
+.foot-row{display:flex;gap:.4rem;}
+.btn-exp{flex:1;background:var(--pop);color:#fff;border:none;padding:.6rem;border-radius:var(--r);font-size:.78rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.btn-exp:hover{background:#b83d1e;}
+.btn-exp:disabled{opacity:.4;cursor:not-allowed;}
+.btn-prev{background:var(--bg4);color:var(--t1);border:1px solid var(--b2);padding:.6rem .8rem;border-radius:var(--r);font-size:.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.btn-logout{width:100%;background:transparent;border:1px solid var(--b2);color:var(--t3);padding:.5rem;border-radius:var(--r);font-size:.75rem;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.btn-logout:hover{color:#e24b4a;border-color:#e24b4a;}
+
+/* Preview overlay */
+#preview-overlay{display:none;position:fixed;inset:0;background:#000;z-index:1000;flex-direction:column;}
+#preview-overlay.open{display:flex;}
+.preview-topbar{background:#1a1a1a;border-bottom:1px solid #2e2e2e;padding:.6rem 1rem;display:flex;align-items:center;gap:.75rem;flex-shrink:0;}
+.preview-topbar select{background:#222;border:1px solid #3a3a3a;color:#f0f0f0;padding:.35rem .6rem;border-radius:6px;font-size:.78rem;font-family:'DM Sans',sans-serif;outline:none;}
+.preview-topbar .ptitle{font-size:.82rem;font-weight:600;color:#f0f0f0;flex:1;}
+.preview-close{background:#d4522a;color:#fff;border:none;padding:.35rem .9rem;border-radius:6px;font-size:.78rem;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.preview-device-btns{display:flex;gap:.3rem;}
+.preview-device-btn{background:#222;border:1px solid #3a3a3a;color:#aaa;padding:.3rem .6rem;border-radius:5px;font-size:.72rem;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.preview-device-btn.on{background:#d4522a;color:#fff;border-color:#d4522a;}
+#preview-wrap{flex:1;display:flex;align-items:center;justify-content:center;background:#111;overflow:hidden;padding:1rem;}
+#preview-frame{border:none;background:#fff;border-radius:6px;transition:width .3s,height .3s;}
+#preview-frame.desktop{width:100%;height:100%;}
+#preview-frame.tablet{width:768px;height:100%;max-height:100%;}
+#preview-frame.mobile{width:390px;height:844px;max-height:100%;}
+
+/* GitHub panel */
+.gh-card{background:#0e1f4a;border:1px solid #1e3a8a;border-radius:var(--r2);padding:1.25rem;margin-bottom:1rem;}
+.gh-card h3{color:#93c5fd;font-size:.85rem;font-weight:600;margin-bottom:.4rem;}
+.gh-card p{color:#93c5fd;font-size:.75rem;line-height:1.6;opacity:.75;margin-bottom:.75rem;}
+.gh-input{width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:6px;padding:.55rem .75rem;color:#f0f0f0;font-size:.82rem;font-family:'DM Sans',sans-serif;outline:none;margin-bottom:.4rem;}
+.gh-input:focus{border-color:#93c5fd;}
+.gh-input::placeholder{color:rgba(255,255,255,.25);}
+.btn-gh-save{background:#1e3a8a;color:#93c5fd;border:1px solid #2563eb;padding:.45rem .9rem;border-radius:6px;font-size:.75rem;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;}
+.btn-gh-save:hover{background:#2563eb;color:#fff;}
+.gh-status{font-size:.7rem;color:#93c5fd;opacity:.6;margin-top:.35rem;}
+.btn-publish-big{width:100%;background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;border:none;padding:.7rem;border-radius:var(--r);font-size:.85rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.02em;margin-bottom:.5rem;}
+.btn-publish-big:hover{background:linear-gradient(135deg,#2563eb,#3b82f6);}
+.btn-publish-big:disabled{opacity:.4;cursor:not-allowed;}
+
+/* Security panel */
+.pwd-form{display:grid;gap:.75rem;}
+.btn-change-pwd{background:var(--pop);color:#fff;border:none;padding:.65rem 1.25rem;border-radius:var(--r);font-size:.82rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.pwd-status{font-size:.75rem;margin-top:.25rem;}
+
+/* About paragraphs */
+.para-rb{background:var(--bg3);border:1px solid var(--b1);border-radius:var(--r);padding:.85rem 1rem .85rem 1.8rem;margin-bottom:.5rem;position:relative;}
+.para-num{position:absolute;top:.75rem;left:.6rem;width:16px;height:16px;background:var(--popdim);color:var(--pop2);border-radius:3px;font-size:.6rem;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.para-del{position:absolute;top:.6rem;right:.6rem;background:none;border:none;color:var(--t3);cursor:pointer;font-size:.82rem;}.para-del:hover{color:#e24b4a;}
+</style>
+</head>
+<body>
+
+<!-- ════════ SIDEBAR ════════ -->
+<div id="sidebar">
+  <div class="brand">
+    <div class="brand-name">flow<span>matic</span></div>
+    <span class="brand-tag">ADMIN</span>
+  </div>
+  <div class="nav-scroll">
+
+    <div class="nav-group">Homepage</div>
+    <button class="nav-btn on" data-panel="general">⚙️ General &amp; SEO</button>
+    <button class="nav-btn" data-panel="colors">🎨 Colors</button>
+    <button class="nav-btn" data-panel="nav">🔗 Navigation</button>
+    <button class="nav-btn" data-panel="hero">🏠 Hero section</button>
+    <button class="nav-btn" data-panel="stats">📊 Stats bar</button>
+    <button class="nav-btn" data-panel="how">📋 How it works</button>
+    <button class="nav-btn" data-panel="homeservices">⭐ Services (home)</button>
+    <button class="nav-btn" data-panel="about">👤 About &amp; Founder</button>
+    <button class="nav-btn" data-panel="testi">💬 Testimonials</button>
+    <button class="nav-btn" data-panel="pricing">💰 Pricing</button>
+    <button class="nav-btn" data-panel="contact">📩 Contact form</button>
+    <button class="nav-btn" data-panel="footer">📄 Footer</button>
+
+    <div class="nav-group">Portfolio page</div>
+    <button class="nav-btn" data-panel="portfolio">🖼️ Portfolio projects</button>
+    <button class="nav-btn" data-panel="portfoliostats">📈 Portfolio stats</button>
+
+    <div class="nav-group">Services page</div>
+    <button class="nav-btn" data-panel="svcpage">🛠️ Service items</button>
+    <button class="nav-btn" data-panel="faq">❓ FAQ</button>
+
+    <div class="nav-group">Publish &amp; Settings</div>
+    <button class="nav-btn" data-panel="github">🚀 Publish to Netlify</button>
+    <button class="nav-btn" data-panel="security">🔒 Security</button>
+
+  </div>
+  <div class="sidebar-foot">
+    <div class="save-indicator"><div class="save-dot" id="save-dot"></div><span id="save-label">Loading...</span></div>
+    <div class="foot-row">
+      <button class="btn-prev" id="btn-preview-index" data-preview="index">👁 Preview</button>
+      <button class="btn-exp btn-publish-big" id="btn-publish" disabled style="padding:.6rem;font-size:.78rem;margin:0;">🚀 Publish</button>
+    </div>
+    <button class="btn-logout" id="btn-logout">← Logout</button>
+  </div>
+</div>
+
+<!-- ════════ MAIN ════════ -->
+<div id="main">
+
+  <!-- ── GENERAL ── -->
+  <div class="panel on" id="p-general">
+    <div class="ph"><h2>General &amp; SEO</h2><p>Brand name, page title, meta description and social sharing tags.</p></div>
+    <div class="card">
+      <div class="ct">Brand name</div>
+      <div class="row2">
+        <div class="f"><label>First part</label><input id="g-b1" data-path="site.brandFirst"/></div>
+        <div class="f"><label>Accent part (shown in colour)</label><input id="g-b2" data-path="site.brandAccent"/></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">SEO &amp; meta</div>
+      <div class="f"><label>Page title (browser tab)</label><input id="g-title" data-path="site.pageTitle"/></div>
+      <div class="f"><label>Meta description</label><textarea id="g-desc" data-path="site.metaDescription"></textarea></div>
+      <div class="f"><label>Favicon URL</label><input id="g-fav" data-path="site.faviconUrl"/><div class="hint">e.g. /img/favicon.png — upload to Netlify first</div></div>
+    </div>
+    <div class="card">
+      <div class="ct">Social sharing (OG tags — for WhatsApp/Instagram previews)</div>
+      <div class="f"><label>OG title</label><input id="g-og-title" data-path="site.ogTitle"/></div>
+      <div class="f"><label>OG description</label><textarea id="g-og-desc" data-path="site.ogDescription"></textarea></div>
+      <div class="f"><label>Site URL</label><input id="g-url" data-path="site.ogUrl"/></div>
+    </div>
+  </div>
+
+  <!-- ── COLORS ── -->
+  <div class="panel" id="p-colors">
+    <div class="ph"><h2>Colors</h2><p>Changes apply to the live site via content.json.</p></div>
+    <div class="card">
+      <div class="f"><label>Primary accent</label><div class="cr"><input type="color" id="cp-pop"/><input type="text" id="ct-pop" data-path="colors.primary"/></div></div>
+      <div class="f"><label>Secondary accent</label><div class="cr"><input type="color" id="cp-pop2"/><input type="text" id="ct-pop2" data-path="colors.secondary"/></div></div>
+      <div class="sep"></div>
+      <div class="f"><label>Page background</label><div class="cr"><input type="color" id="cp-bg"/><input type="text" id="ct-bg" data-path="colors.background"/></div></div>
+      <div class="f"><label>Dark ink / text</label><div class="cr"><input type="color" id="cp-ink"/><input type="text" id="ct-ink" data-path="colors.ink"/></div></div>
+    </div>
+    <div class="card" style="margin-top:.5rem;">
+      <div class="ct">Preview</div>
+      <button class="add-row-btn" data-preview="index" id="btn-preview-colors">👁 Preview homepage with new colors</button>
+    </div>
+  </div>
+
+  <!-- ── NAV ── -->
+  <div class="panel" id="p-nav">
+    <div class="ph"><h2>Navigation</h2><p>Add, edit or remove nav links. Toggle CTA to give a link a filled button style.</p></div>
+    <div class="card">
+      <div class="ct">Nav links</div>
+      <div id="nav-wrap"></div>
+      <div class="add-row"><button class="add-row-btn" id="btn-add-nav">+ Add nav link</button></div>
+    </div>
+  </div>
+
+  <!-- ── HERO ── -->
+  <div class="panel" id="p-hero">
+    <div class="ph"><h2>Hero Section</h2><p>The first thing visitors see.</p></div>
+    <div class="card">
+      <div class="f"><label>Badge text</label><input id="h-badge" data-path="hero.badge"/></div>
+      <div class="f"><label>Headline line 1</label><input id="h-h1" data-path="hero.headlineLine1"/></div>
+      <div class="f"><label>Headline line 2 (italic accent)</label><input id="h-h2" data-path="hero.headlineLine2"/></div>
+      <div class="f"><label>Subheading</label><textarea id="h-sub" data-path="hero.subheading"></textarea></div>
+      <div class="row2">
+        <div class="f"><label>Primary button</label><input id="h-btn1" data-path="hero.primaryBtn"/></div>
+        <div class="f"><label>Secondary button</label><input id="h-btn2" data-path="hero.secondaryBtn"/></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">Business type pills</div>
+      <div id="pills-wrap" class="pill-wrap"></div>
+      <div class="pill-add"><input id="pill-inp" placeholder="e.g. 🏥 Clinics &amp; doctors"/><button class="badd" id="btn-add-pill">+ Add</button></div>
+    </div>
+  </div>
+
+  <!-- ── STATS ── -->
+  <div class="panel" id="p-stats">
+    <div class="ph"><h2>Stats Bar</h2><p>The 3 numbers on the dark banner.</p></div>
+    <div id="stats-wrap"></div>
+    <div class="add-row"><button class="add-row-btn" id="btn-add-stat">+ Add stat</button></div>
+  </div>
+
+  <!-- ── HOW IT WORKS ── -->
+  <div class="panel" id="p-how">
+    <div class="ph"><h2>How It Works</h2><p>Edit steps or add more.</p></div>
+    <div class="card">
+      <div class="row2">
+        <div class="f"><label>Section label</label><input id="hw-lbl" data-path="howItWorks.label"/></div>
+        <div class="f"><label>Title</label><input id="hw-tit" data-path="howItWorks.title"/></div>
+      </div>
+      <div class="f"><label>Subtitle</label><textarea id="hw-sub" data-path="howItWorks.subtitle"></textarea></div>
+    </div>
+    <div id="steps-wrap"></div>
+    <div class="add-row"><button class="add-row-btn" id="btn-add-step">+ Add step</button></div>
+  </div>
+
+  <!-- ── HOME SERVICES ── -->
+  <div class="panel" id="p-homeservices">
+    <div class="ph"><h2>Services (Homepage cards)</h2><p>These appear as cards on the main landing page.</p></div>
+    <div class="card">
+      <div class="row2">
+        <div class="f"><label>Section label</label><input id="svc-lbl" data-path="services.label"/></div>
+        <div class="f"><label>Title</label><input id="svc-tit" data-path="services.title"/></div>
+      </div>
+    </div>
+    <div id="svc-wrap"></div>
+    <div class="add-row"><button class="add-row-btn" id="btn-add-svc">+ Add service card</button></div>
+  </div>
+
+  <!-- ── ABOUT ── -->
+  <div class="panel" id="p-about">
+    <div class="ph"><h2>About &amp; Founder</h2><p>Your story, values, and the founder card.</p></div>
+    <div class="card">
+      <div class="row2">
+        <div class="f"><label>Section label</label><input id="ab-lbl" data-path="about.label"/></div>
+        <div class="f"><label>Section title</label><input id="ab-tit" data-path="about.title"/></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">Story paragraphs</div>
+      <div id="about-paras-wrap"></div>
+      <div class="add-row"><button class="add-row-btn" id="btn-add-para">+ Add paragraph</button></div>
+    </div>
+    <div class="card">
+      <div class="ct">Values</div>
+      <div id="values-wrap"></div>
+      <div class="add-row"><button class="add-row-btn" id="btn-add-value">+ Add value</button></div>
+    </div>
+    <div class="card">
+      <div class="ct">Founder card</div>
+      <div class="row2">
+        <div class="f"><label>Avatar initial</label><input id="ab-ini" data-path="about.founderInitial" maxlength="2" style="max-width:80px"/></div>
+        <div class="f"><label>Card heading</label><input id="ab-ch" data-path="about.founderHeading"/></div>
+      </div>
+      <div id="founder-paras-wrap"></div>
+      <div class="add-row"><button class="add-row-btn" id="btn-add-founder-para">+ Add paragraph</button></div>
+      <div class="f" style="margin-top:.75rem;"><label>Signature line</label><input id="ab-sig" data-path="about.founderSignature"/></div>
+    </div>
+  </div>
+
+  <!-- ── TESTIMONIALS ── -->
+  <div class="panel" id="p-testi">
+    <div class="ph"><h2>Testimonials</h2><p>Add or edit client quotes.</p></div>
+    <div class="card">
+      <div class="row2">
+        <div class="f"><label>Section label</label><input id="ts-lbl" data-path="testimonials.label"/></div>
+        <div class="f"><label>Title</label><input id="ts-tit" data-path="testimonials.title"/></div>
+      </div>
+    </div>
+    <div id="testi-wrap"></div>
+    <div class="add-row"><button class="add-row-btn" id="btn-add-testi">+ Add testimonial</button></div>
+  </div>
+
+  <!-- ── PRICING ── -->
+  <div class="panel" id="p-pricing">
+    <div class="ph"><h2>Pricing Plans</h2><p>Edit or add pricing plans. These appear on both the homepage and services page.</p></div>
+    <div class="card">
+      <div class="row2">
+        <div class="f"><label>Section label</label><input id="pr-lbl" data-path="pricing.label"/></div>
+        <div class="f"><label>Title</label><input id="pr-tit" data-path="pricing.title"/></div>
+      </div>
+      <div class="f"><label>Subtitle</label><textarea id="pr-sub" data-path="pricing.subtitle"></textarea></div>
+    </div>
+    <div id="price-wrap"></div>
+    <div class="add-row"><button class="add-row-btn" id="btn-add-price">+ Add pricing plan</button></div>
+  </div>
+
+  <!-- ── CONTACT ── -->
+  <div class="panel" id="p-contact">
+    <div class="ph"><h2>Contact Form</h2><p>Section text, form messages, and Google Sheets connection.</p></div>
+    <div class="card">
+      <div class="row2">
+        <div class="f"><label>Section label</label><input id="ct-lbl" data-path="contact.label"/></div>
+        <div class="f"><label>Title</label><input id="ct-tit" data-path="contact.title"/></div>
+      </div>
+      <div class="f"><label>Subtitle</label><textarea id="ct-sub" data-path="contact.subtitle"></textarea></div>
+      <div class="f"><label>Submit button text</label><input id="ct-btn" data-path="contact.submitBtn"/></div>
+      <div class="f"><label>Success message</label><input id="ct-ok" data-path="contact.successMessage"/></div>
+      <div class="f"><label>Note below form</label><input id="ct-note" data-path="contact.noteText"/></div>
+    </div>
+    <div class="card">
+      <div class="ct">Google Sheets connection</div>
+      <div class="f"><label>Apps Script deployed URL</label><input id="ct-url" data-path="contact.appsScriptUrl"/></div>
+      <div class="info">This URL connects form submissions to your Google Sheet. Only change it if you create a new Apps Script deployment.</div>
+    </div>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <div class="panel" id="p-footer">
+    <div class="ph"><h2>Footer</h2><p>Copyright line and contact links.</p></div>
+    <div class="card">
+      <div class="f"><label>Copyright text</label><input id="ft-copy" data-path="footer.copyright"/></div>
+      <div class="f"><label>Email (mailto link)</label><input id="ft-email" data-path="footer.email"/></div>
+      <div class="f"><label>Email display text</label><input id="ft-elbl" data-path="footer.emailDisplay"/></div>
+      <div class="f"><label>WhatsApp number (digits only, no + or spaces)</label><input id="ft-wa" data-path="footer.whatsapp"/><div class="hint">e.g. 919773174942 for +91 97731 74942</div></div>
+    </div>
+  </div>
+
+  <!-- ── PORTFOLIO PROJECTS ── -->
+  <div class="panel" id="p-portfolio">
+    <div class="ph"><h2>Portfolio Projects</h2><p>Client work shown on the /pages/portfolio.html page.</p></div>
+    <div class="card">
+      <div class="row2">
+        <div class="f"><label>Page label</label><input id="po-lbl" data-path="portfolio.label"/></div>
+        <div class="f"><label>Page title</label><input id="po-tit" data-path="portfolio.title"/></div>
+      </div>
+      <div class="f"><label>Subtitle</label><textarea id="po-sub" data-path="portfolio.subtitle"></textarea></div>
+    </div>
+    <div id="portfolio-projects-wrap"></div>
+    <div class="add-row"><button class="add-row-btn" id="btn-add-project">+ Add project</button></div>
+  </div>
+
+  <!-- ── PORTFOLIO STATS ── -->
+  <div class="panel" id="p-portfoliostats">
+    <div class="ph"><h2>Portfolio Stats Bar</h2><p>Numbers shown on the dark bar on the portfolio page.</p></div>
+    <div id="portfolio-stats-wrap"></div>
+    <div class="add-row"><button class="add-row-btn" id="btn-add-portfolio-stat">+ Add stat</button></div>
+  </div>
+
+  <!-- ── SERVICES PAGE ── -->
+  <div class="panel" id="p-svcpage">
+    <div class="ph"><h2>Services Page — Service Items</h2><p>Full service descriptions on /pages/services.html.</p></div>
+    <div class="card">
+      <div class="f"><label>Hero title</label><input id="sp-title" data-path="servicesPage.heroTitle"/></div>
+      <div class="f"><label>Hero subtitle</label><textarea id="sp-sub" data-path="servicesPage.heroSubtitle"></textarea></div>
+    </div>
+    <div id="svcpage-wrap"></div>
+    <div class="add-row"><button class="add-row-btn" id="btn-add-svcpage">+ Add service item</button></div>
+  </div>
+
+  <!-- ── FAQ ── -->
+  <div class="panel" id="p-faq">
+    <div class="ph"><h2>FAQ</h2><p>Frequently asked questions on the services page.</p></div>
+    <div id="faq-wrap"></div>
+    <div class="add-row"><button class="add-row-btn" id="btn-add-faq">+ Add FAQ item</button></div>
+  </div>
+
+  <!-- ── GITHUB / PUBLISH ── -->
+  <div class="panel" id="p-github">
+    <div class="ph"><h2>Publish to Netlify</h2><p>Push content.json to GitHub → Netlify auto-deploys in ~30 seconds.</p></div>
+
+    <div class="gh-card">
+      <h3>🔧 One-time GitHub setup</h3>
+      <p>1. Create a free account at github.com<br>
+         2. Create a repository — name it <strong>flowmatic-site</strong><br>
+         3. GitHub → Settings → Developer settings → Personal access tokens → Fine-grained<br>
+         4. Create a token with <strong>Contents: Read &amp; Write</strong> for your repo<br>
+         5. In Netlify → connect your site to the GitHub repo<br>
+         6. Paste your details below (saved in your browser only)</p>
+      <input class="gh-input" id="gh-token" type="password" placeholder="GitHub personal access token (ghp_...)"/>
+      <input class="gh-input" id="gh-owner" placeholder="GitHub username (e.g. ashishkushwaha)"/>
+      <input class="gh-input" id="gh-repo"  placeholder="Repository name (e.g. flowmatic-site)"/>
+      <input class="gh-input" id="gh-branch" placeholder="Branch (default: main)"/>
+      <input class="gh-input" id="gh-site-url" placeholder="Netlify URL (e.g. https://flowmaticaitrial.netlify.app)"/>
+      <button class="btn-gh-save" id="btn-save-gh">Save GitHub config</button>
+      <div class="gh-status" id="gh-status"></div>
+    </div>
+
+    <div class="card">
+      <div class="ct">Publish</div>
+      <button class="btn-publish-big" id="btn-publish-panel" disabled>🚀 Publish — Push content.json to GitHub</button>
+      <div class="info">Netlify detects the change and rebuilds your live site in about 30 seconds. No coding, no FTP.</div>
+    </div>
+
+    <div class="card">
+      <div class="ct">Manual fallback — download &amp; upload yourself</div>
+      <div class="info" style="margin-bottom:.75rem;">If GitHub is not set up: download content.json, then drag-and-drop your entire site folder to netlify.com/drop.</div>
+      <button class="add-row-btn" id="btn-download-json">⬇ Download content.json</button>
+    </div>
+  </div>
+
+  <!-- ── SECURITY ── -->
+  <div class="panel" id="p-security">
+    <div class="ph"><h2>Security</h2><p>Change your admin panel password. The password is SHA-256 hashed — never stored in plain text.</p></div>
+    <div class="card">
+      <div class="ct">Change password</div>
+      <div class="pwd-form">
+        <div class="f"><label>Current password</label><input type="password" id="pwd-current" placeholder="Current password"/></div>
+        <div class="f"><label>New password</label><input type="password" id="pwd-new" placeholder="New password (min 6 characters)"/></div>
+        <div class="f"><label>Confirm new password</label><input type="password" id="pwd-confirm" placeholder="Confirm new password"/></div>
+        <button class="btn-change-pwd" id="btn-change-pwd">Update password</button>
+        <div class="pwd-status" id="pwd-status"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct">How admin security works</div>
+      <div class="info">
+        Your password is hashed with SHA-256 and stored in content.json as a hash string — the actual password is never saved anywhere.<br><br>
+        The admin session lasts 8 hours. After that you need to log in again.<br><br>
+        <strong>After changing your password:</strong> click 🚀 Publish (or download content.json and re-deploy) to make the new password live on Netlify.
+      </div>
+    </div>
+  </div>
+
+</div><!-- #main -->
+
+<!-- ════════ PREVIEW OVERLAY ════════ -->
+<div id="preview-overlay">
+  <div class="preview-topbar">
+    <span class="ptitle">Live Preview</span>
+    <select id="preview-page-select">
+      <option value="index">Homepage (index.html)</option>
+      <option value="portfolio">Portfolio page</option>
+      <option value="services">Services page</option>
+    </select>
+    <div class="preview-device-btns">
+      <button class="preview-device-btn on" data-device="desktop">🖥 Desktop</button>
+      <button class="preview-device-btn" data-device="tablet">📱 Tablet</button>
+      <button class="preview-device-btn" data-device="mobile">📱 Mobile</button>
+    </div>
+    <button class="preview-close" id="preview-close">✕ Close</button>
+  </div>
+  <div id="preview-wrap">
+    <iframe id="preview-frame" class="desktop" sandbox="allow-scripts allow-same-origin"></iframe>
+  </div>
+</div>
+
+<div id="toast">Saved</div>
+
+<script src="admin.js"></script>
+</body>
+</html>

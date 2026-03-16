@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>New Client — Flowmatic</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--pop:#d4522a;--pop2:#e8a87c;--ink:#0a0a0a;--bg:#faf9f6;--bg2:#f2f0eb;--bg3:#e8e5de;--card:#fff;--r:14px;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;}
+
+/* ── TOP BAR ── */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;background:var(--card);border-bottom:1px solid var(--bg3);position:sticky;top:0;z-index:10;}
+.topbar-logo{font-family:'Instrument Serif',serif;font-size:1.2rem;text-decoration:none;color:var(--ink);}
+.topbar-logo span{color:var(--pop);}
+.topbar-back{font-size:.82rem;color:var(--pop);text-decoration:none;font-weight:500;}
+
+/* ── PROGRESS ── */
+.progress-wrap{padding:1rem 1.5rem .5rem;background:var(--card);border-bottom:1px solid var(--bg3);}
+.progress-label{font-size:.72rem;color:#888;margin-bottom:.5rem;display:flex;justify-content:space-between;}
+.progress-bar{height:4px;background:var(--bg3);border-radius:100px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--pop);border-radius:100px;transition:width .4s ease;}
+.step-dots{display:flex;gap:.4rem;margin-top:.6rem;justify-content:center;}
+.step-dot{width:7px;height:7px;border-radius:50%;background:var(--bg3);transition:all .3s;}
+.step-dot.done{background:var(--pop2);}
+.step-dot.active{background:var(--pop);transform:scale(1.3);}
+
+/* ── STEP CONTAINER ── */
+.steps-outer{overflow:hidden;}
+.steps-inner{display:flex;transition:transform .4s cubic-bezier(.4,0,.2,1);}
+.step{min-width:100%;padding:1.5rem;}
+
+/* ── CARDS / INPUTS ── */
+.step-card{background:var(--card);border-radius:var(--r);border:1px solid var(--bg3);padding:1.5rem;margin-bottom:1rem;}
+.step-icon{font-size:2rem;margin-bottom:.75rem;}
+.step-title{font-family:'Instrument Serif',serif;font-size:1.4rem;margin-bottom:.3rem;}
+.step-sub{font-size:.85rem;color:#666;line-height:1.5;margin-bottom:1.25rem;}
+.f{margin-bottom:1rem;}.f:last-child{margin-bottom:0;}
+.f label{display:block;font-size:.75rem;font-weight:600;color:#555;margin-bottom:.4rem;text-transform:uppercase;letter-spacing:.05em;}
+.f input,.f select,.f textarea{width:100%;padding:.8rem 1rem;border:1.5px solid var(--bg3);border-radius:10px;font-size:.95rem;font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);outline:none;transition:border .2s;}
+.f input:focus,.f select:focus,.f textarea:focus{border-color:var(--pop);background:#fff;}
+.f textarea{resize:none;min-height:80px;line-height:1.5;}
+.f select{appearance:none;cursor:pointer;}
+.f.error input,.f.error select,.f.error textarea{border-color:#e24b4a;}
+.f .err{font-size:.72rem;color:#e24b4a;margin-top:.3rem;display:none;}
+.f.error .err{display:block;}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+
+/* ── OPTION CARDS ── */
+.option-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;}
+.option-card{border:1.5px solid var(--bg3);border-radius:10px;padding:.75rem;cursor:pointer;transition:all .2s;text-align:center;background:var(--bg);}
+.option-card:hover{border-color:var(--pop);background:#fff8f6;}
+.option-card.selected{border-color:var(--pop);background:#fff3ef;}
+.option-card .oc-icon{font-size:1.4rem;margin-bottom:.3rem;}
+.option-card .oc-label{font-size:.78rem;font-weight:600;color:var(--ink);}
+
+/* ── INTEREST TOGGLES ── */
+.interest-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;}
+.interest-item{display:flex;align-items:center;gap:.5rem;padding:.6rem .75rem;border:1.5px solid var(--bg3);border-radius:8px;cursor:pointer;transition:border .15s,background .15s;background:var(--bg);-webkit-tap-highlight-color:transparent;user-select:none;}
+.interest-item:active{transform:scale(.97);}
+.interest-item.selected{border-color:var(--pop);background:#fff3ef;}
+.interest-item.selected .ii-label{color:var(--pop);font-weight:600;}
+.interest-item .ii-icon{font-size:1.1rem;flex-shrink:0;}
+.interest-item .ii-label{font-size:.82rem;font-weight:500;flex:1;}
+.interest-item .ii-check{font-size:.75rem;opacity:0;transition:opacity .15s;color:var(--pop);}
+.interest-item.selected .ii-check{opacity:1;}
+
+/* ── BUDGET SLIDER ── */
+.budget-display{font-family:'Instrument Serif',serif;font-size:2rem;text-align:center;color:var(--pop);margin-bottom:.5rem;}
+.budget-note{font-size:.78rem;color:#888;text-align:center;margin-bottom:1rem;}
+input[type=range]{width:100%;accent-color:var(--pop);height:6px;cursor:pointer;}
+
+/* ── BUTTONS ── */
+.btn-row{display:flex;gap:.75rem;padding:1rem 1.5rem;background:var(--bg);border-top:1px solid var(--bg3);position:sticky;bottom:0;}
+.btn-next{flex:1;background:var(--pop);color:#fff;border:none;padding:.9rem;border-radius:100px;font-size:.95rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.btn-next:hover{background:#c0431e;}
+.btn-next:disabled{opacity:.5;cursor:not-allowed;}
+.btn-back{background:var(--bg2);color:var(--ink);border:1.5px solid var(--bg3);padding:.9rem 1.25rem;border-radius:100px;font-size:.95rem;cursor:pointer;font-family:'DM Sans',sans-serif;}
+
+/* ── SUMMARY / SUCCESS ── */
+.summary-item{display:flex;gap:.75rem;padding:.75rem 0;border-bottom:1px solid var(--bg3);}
+.summary-item:last-child{border:none;}
+.summary-label{font-size:.78rem;color:#888;width:110px;flex-shrink:0;padding-top:.1rem;}
+.summary-value{font-size:.88rem;font-weight:500;flex:1;line-height:1.4;}
+.plan-badge{display:inline-block;background:var(--pop);color:#fff;font-size:.72rem;font-weight:700;padding:.2rem .6rem;border-radius:100px;margin-left:.4rem;vertical-align:middle;}
+
+.success-screen{display:none;padding:2rem 1.5rem;text-align:center;}
+.success-screen.show{display:block;}
+.success-icon{font-size:3.5rem;margin-bottom:1rem;}
+.success-title{font-family:'Instrument Serif',serif;font-size:1.8rem;margin-bottom:.5rem;}
+.success-sub{color:#666;font-size:.9rem;line-height:1.6;margin-bottom:2rem;}
+.success-actions{display:flex;flex-direction:column;gap:.75rem;}
+.btn-wa{background:#25D366;color:#fff;border:none;padding:1rem;border-radius:100px;font-size:.95rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:.5rem;text-decoration:none;}
+.btn-new{background:var(--bg2);color:var(--ink);border:1.5px solid var(--bg3);padding:1rem;border-radius:100px;font-size:.9rem;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.client-ref{font-size:.72rem;color:#aaa;margin-top:1rem;}
+
+@media(min-width:600px){
+  body{max-width:480px;margin:0 auto;box-shadow:0 0 40px rgba(0,0,0,.08);}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../index.html" class="topbar-logo">flow<span>matic</span></a>
+  <a href="../index.html" class="topbar-back">← Home</a>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-label">
+    <span id="step-label">Step 1 of 5</span>
+    <span id="step-pct">0%</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+  <div class="step-dots" id="step-dots"></div>
+</div>
+
+<div class="steps-outer">
+  <div class="steps-inner" id="steps-inner">
+
+    <!-- STEP 1: Intro + Basic Info -->
+    <div class="step" id="step-1">
+      <div class="step-card">
+        <div class="step-icon">👋</div>
+        <div class="step-title">Let's get started</div>
+        <div class="step-sub">Hi! I'm Ashish from Flowmatic. Let me take a few details about your shop — this will take under 2 minutes.</div>
+        <div class="f" id="f-name">
+          <label>Your name</label>
+          <input id="inp-name" placeholder="e.g. Ramesh Sharma" autocomplete="name"/>
+          <div class="err">Please enter your name</div>
+        </div>
+        <div class="f" id="f-shop">
+          <label>Shop / Business name</label>
+          <input id="inp-shop" placeholder="e.g. Sharma Kirana Store"/>
+          <div class="err">Please enter your shop name</div>
+        </div>
+        <div class="f" id="f-city">
+          <label>City / Area</label>
+          <input id="inp-city" placeholder="e.g. Ahmedabad, Maninagar"/>
+          <div class="err">Please enter your city</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2: Business Type -->
+    <div class="step" id="step-2">
+      <div class="step-card">
+        <div class="step-icon">🏪</div>
+        <div class="step-title">What kind of shop?</div>
+        <div class="step-sub">Tap the type that best describes your business.</div>
+        <div class="option-grid" id="biz-type-grid">
+          <div class="option-card" data-val="Kirana / Grocery"><div class="oc-icon">🛒</div><div class="oc-label">Kirana / Grocery</div></div>
+          <div class="option-card" data-val="Clothing / Boutique"><div class="oc-icon">👗</div><div class="oc-label">Clothing / Boutique</div></div>
+          <div class="option-card" data-val="Tiffin / Food service"><div class="oc-icon">🍱</div><div class="oc-label">Tiffin / Food</div></div>
+          <div class="option-card" data-val="Salon / Parlour"><div class="oc-icon">💆</div><div class="oc-label">Salon / Parlour</div></div>
+          <div class="option-card" data-val="Repair / Service"><div class="oc-icon">🛠️</div><div class="oc-label">Repair / Service</div></div>
+          <div class="option-card" data-val="Pharmacy / Medical"><div class="oc-icon">💊</div><div class="oc-label">Pharmacy</div></div>
+          <div class="option-card" data-val="Street / Vendor"><div class="oc-icon">📦</div><div class="oc-label">Street / Vendor</div></div>
+          <div class="option-card" data-val="Other"><div class="oc-icon">✨</div><div class="oc-label">Other</div></div>
+        </div>
+        <div class="f" style="margin-top:.75rem;display:none;" id="other-type-wrap">
+          <label>Describe your business</label>
+          <input id="inp-other-type" placeholder="e.g. Flower shop, Toy store..."/>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3: What they need -->
+    <div class="step" id="step-3">
+      <div class="step-card">
+        <div class="step-icon">✅</div>
+        <div class="step-title">What do you need?</div>
+        <div class="step-sub">Select everything that sounds useful. You can add more later.</div>
+        <div class="interest-grid" id="interest-grid">
+          <div class="interest-item" data-val="Website"><span class="ii-icon">🌐</span><span class="ii-label">Website</span><span class="ii-check">✓</span></div>
+          <div class="interest-item" data-val="Google Maps listing"><span class="ii-icon">📍</span><span class="ii-label">Google Maps</span><span class="ii-check">✓</span></div>
+          <div class="interest-item" data-val="WhatsApp bot"><span class="ii-icon">💬</span><span class="ii-label">WhatsApp Bot</span><span class="ii-check">✓</span></div>
+          <div class="interest-item" data-val="Product showcase"><span class="ii-icon">📸</span><span class="ii-label">Product Page</span><span class="ii-check">✓</span></div>
+          <div class="interest-item" data-val="AI automation"><span class="ii-icon">🤖</span><span class="ii-label">AI Automation</span><span class="ii-check">✓</span></div>
+          <div class="interest-item" data-val="Social media"><span class="ii-icon">📱</span><span class="ii-label">Social Media</span><span class="ii-check">✓</span></div>
+          <div class="interest-item" data-val="Online ordering"><span class="ii-icon">🛍️</span><span class="ii-label">Online Orders</span><span class="ii-check">✓</span></div>
+          <div class="interest-item" data-val="Monthly support"><span class="ii-icon">🔧</span><span class="ii-label">Monthly Care</span><span class="ii-check">✓</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4: Budget + Contact -->
+    <div class="step" id="step-4">
+      <div class="step-card">
+        <div class="step-icon">💰</div>
+        <div class="step-title">Budget &amp; contact</div>
+        <div class="step-sub">Rough budget helps me suggest the right plan. No commitment.</div>
+        <div class="budget-display" id="budget-display">₹3,999</div>
+        <div class="budget-note">Slide to set your rough budget</div>
+        <input type="range" id="budget-slider" min="0" max="4" value="1" step="1"/>
+        <div style="display:flex;justify-content:space-between;font-size:.7rem;color:#aaa;margin-bottom:1.25rem;">
+          <span>₹999</span><span>₹3,999</span><span>₹7,999</span><span>₹15,000</span><span>No limit</span>
+        </div>
+        <div class="f" id="f-phone">
+          <label>WhatsApp number</label>
+          <input id="inp-phone" type="tel" placeholder="+91 98765 43210" autocomplete="tel"/>
+          <div class="err">Please enter a valid number</div>
+        </div>
+        <div class="f">
+          <label>Email (optional)</label>
+          <input id="inp-email" type="email" placeholder="you@example.com" autocomplete="email"/>
+        </div>
+        <div class="f">
+          <label>Anything else?</label>
+          <textarea id="inp-notes" placeholder="Tell me more about your shop, special requests..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 5: Summary + Confirm -->
+    <div class="step" id="step-5">
+      <div class="step-card">
+        <div class="step-icon">📋</div>
+        <div class="step-title">Looks good!</div>
+        <div class="step-sub">Review the details before I save this lead.</div>
+        <div id="summary-body"></div>
+      </div>
+    </div>
+
+  </div><!-- steps-inner -->
+</div><!-- steps-outer -->
+
+<!-- Success screen (outside steps) -->
+<div class="success-screen" id="success-screen">
+  <div class="success-icon">🎉</div>
+  <div class="success-title">Lead saved!</div>
+  <div class="success-sub" id="success-msg-text">Details saved. Follow up with this client on WhatsApp to close the deal.</div>
+  <div class="success-actions">
+    <a id="wa-follow-up" href="#" class="btn-wa" target="_blank">
+      💬 Open WhatsApp to follow up
+    </a>
+    <button class="btn-new" id="btn-new-client">+ Add another client</button>
+  </div>
+  <div class="client-ref" id="client-ref"></div>
+</div>
+
+<div class="btn-row" id="btn-row">
+  <button class="btn-back" id="btn-back" style="display:none">← Back</button>
+  <button class="btn-next" id="btn-next">Next →</button>
+</div>
+
+<script>
+(function() {
+  var TOTAL_STEPS = 5;
+  var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyNP1dpmsA6EVnOoMRdCaRKEed_tnP-iOIEbdKxLV2jM1WcG2Cz4cb97CySRHWpXpMU/exec';
+
+  var cur = 1;
+  var data = {
+    name:'', shop:'', city:'', bizType:'', interests:[], budget:'₹3,999',
+    phone:'', email:'', notes:''
+  };
+
+  var budgetMap = ['₹999', '₹3,999', '₹7,999', '₹15,000', 'No fixed limit'];
+
+  // ── BUILD DOTS ──────────────────────────────────────────
+  var dotsEl = document.getElementById('step-dots');
+  for (var i = 1; i <= TOTAL_STEPS; i++) {
+    var d = document.createElement('div');
+    d.className = 'step-dot' + (i === 1 ? ' active' : '');
+    d.dataset.step = i;
+    dotsEl.appendChild(d);
+  }
+
+  function updateProgress() {
+    var pct = Math.round(((cur - 1) / TOTAL_STEPS) * 100);
+    document.getElementById('prog-fill').style.width = pct + '%';
+    document.getElementById('step-label').textContent = 'Step ' + cur + ' of ' + TOTAL_STEPS;
+    document.getElementById('step-pct').textContent = pct + '%';
+    document.querySelectorAll('.step-dot').forEach(function(dot) {
+      var s = parseInt(dot.dataset.step);
+      dot.className = 'step-dot' + (s < cur ? ' done' : s === cur ? ' active' : '');
+    });
+    document.getElementById('btn-back').style.display = cur > 1 ? 'block' : 'none';
+    document.getElementById('btn-next').textContent = cur === TOTAL_STEPS ? '✓ Save & Send' : 'Next →';
+  }
+
+  function goTo(n) {
+    cur = n;
+    document.getElementById('steps-inner').style.transform = 'translateX(-' + ((n - 1) * 100) + '%)';
+    updateProgress();
+    window.scrollTo(0, 0);
+  }
+
+  // ── STEP 2: Business type cards ──────────────────────────
+  document.querySelectorAll('#biz-type-grid .option-card').forEach(function(card) {
+    card.addEventListener('click', function() {
+      document.querySelectorAll('#biz-type-grid .option-card').forEach(function(c) { c.classList.remove('selected'); });
+      card.classList.add('selected');
+      data.bizType = card.dataset.val;
+      var otherWrap = document.getElementById('other-type-wrap');
+      otherWrap.style.display = card.dataset.val === 'Other' ? 'block' : 'none';
+    });
+  });
+
+  // ── STEP 3: Interests ────────────────────────────────────
+  document.querySelectorAll('#interest-grid .interest-item').forEach(function(item) {
+    item.addEventListener('click', function(e) {
+      e.stopPropagation();
+      var isSelected = item.classList.contains('selected');
+      if (isSelected) {
+        item.classList.remove('selected');
+        var idx = data.interests.indexOf(item.dataset.val);
+        if (idx >= 0) data.interests.splice(idx, 1);
+      } else {
+        item.classList.add('selected');
+        data.interests.push(item.dataset.val);
+      }
+    });
+  });
+
+  // ── STEP 4: Budget slider ────────────────────────────────
+  var slider = document.getElementById('budget-slider');
+  slider.addEventListener('input', function() {
+    data.budget = budgetMap[parseInt(slider.value)];
+    document.getElementById('budget-display').textContent = data.budget;
+  });
+  data.budget = budgetMap[parseInt(slider.value)];
+
+  // ── VALIDATE ─────────────────────────────────────────────
+  function validate() {
+    var ok = true;
+    function chk(fieldId, inputId, test) {
+      var val = document.getElementById(inputId).value.trim();
+      var f = document.getElementById(fieldId);
+      if (!test(val)) { f.classList.add('error'); ok = false; }
+      else { f.classList.remove('error'); }
+      return val;
+    }
+    if (cur === 1) {
+      data.name = chk('f-name', 'inp-name', function(v) { return v.length > 0; });
+      data.shop = chk('f-shop', 'inp-shop', function(v) { return v.length > 0; });
+      data.city = chk('f-city', 'inp-city', function(v) { return v.length > 0; });
+    }
+    if (cur === 2) {
+      if (!data.bizType) { ok = false; }
+      if (data.bizType === 'Other') {
+        var ot = document.getElementById('inp-other-type').value.trim();
+        if (ot) data.bizType = ot;
+      }
+    }
+    if (cur === 4) {
+      data.phone = chk('f-phone', 'inp-phone', function(v) { return v.length >= 7; });
+      data.email = document.getElementById('inp-email').value.trim();
+      data.notes = document.getElementById('inp-notes').value.trim();
+    }
+    return ok;
+  }
+
+  // ── BUILD SUMMARY ─────────────────────────────────────────
+  function buildSummary() {
+    // Suggest plan based on budget
+    var plan = 'Starter (₹3,999)';
+    if (data.budget === '₹7,999' || data.budget === '₹15,000' || data.budget === 'No fixed limit') plan = 'Growth (₹7,999)';
+    if (data.budget === '₹999') plan = 'Starter (₹3,999) or discuss';
+    data.suggestedPlan = plan;
+
+    var rows = [
+      {l: 'Name', v: data.name},
+      {l: 'Shop', v: data.shop},
+      {l: 'City', v: data.city},
+      {l: 'Business type', v: data.bizType},
+      {l: 'Interested in', v: data.interests.length ? data.interests.join(', ') : 'Not specified'},
+      {l: 'Budget', v: data.budget},
+      {l: 'Suggested plan', v: '<span>' + plan + '<span class="plan-badge">→</span></span>'},
+      {l: 'WhatsApp', v: data.phone},
+      {l: 'Email', v: data.email || '—'},
+      {l: 'Notes', v: data.notes || '—'},
+    ];
+    var html = rows.map(function(r) {
+      return '<div class="summary-item"><div class="summary-label">' + r.l + '</div><div class="summary-value">' + r.v + '</div></div>';
+    }).join('');
+    document.getElementById('summary-body').innerHTML = html;
+  }
+
+  // ── SUBMIT ────────────────────────────────────────────────
+  function submitLead() {
+    var btn = document.getElementById('btn-next');
+    btn.disabled = true;
+    btn.textContent = 'Saving...';
+
+    var payload = {
+      name: data.name,
+      phone: data.phone,
+      email: data.email,
+      business: data.shop,
+      type: data.bizType,
+      city: data.city,
+      message: 'Interests: ' + data.interests.join(', ') + ' | Budget: ' + data.budget + ' | Notes: ' + data.notes,
+      contact: data.phone,
+      source: 'offline-onboarding',
+      suggestedPlan: data.suggestedPlan
+    };
+
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload)
+    })
+    .then(function() { showSuccess(); })
+    .catch(function() {
+      // Still show success — no-cors fetch always resolves
+      showSuccess();
+    });
+  }
+
+  function showSuccess() {
+    document.querySelector('.steps-outer').style.display = 'none';
+    document.getElementById('btn-row').style.display = 'none';
+    document.querySelector('.progress-wrap').style.display = 'none';
+    var ss = document.getElementById('success-screen');
+    ss.classList.add('show');
+
+    // WhatsApp follow-up link
+    var msg = encodeURIComponent(
+      'Hi ' + data.name + '! I am Ashish from Flowmatic. ' +
+      'Great meeting you today. Based on what you told me about ' + data.shop + ', ' +
+      'I think the ' + data.suggestedPlan + ' would be perfect for you. ' +
+      'Can we set up a quick call to get started?'
+    );
+    var waNum = data.phone.replace(/\D/g, '');
+    if (waNum.length === 10) waNum = '91' + waNum;
+    document.getElementById('wa-follow-up').href = 'https://wa.me/' + waNum + '?text=' + msg;
+
+    document.getElementById('success-msg-text').textContent =
+      data.name + "'s details saved to Google Sheets. Send them a WhatsApp follow-up now!";
+
+    var ref = 'Lead #' + Date.now().toString(36).toUpperCase() + ' · ' + new Date().toLocaleString('en-IN');
+    document.getElementById('client-ref').textContent = ref;
+  }
+
+  // ── NEXT / BACK BUTTONS ───────────────────────────────────
+  document.getElementById('btn-next').addEventListener('click', function() {
+    if (!validate()) return;
+    if (cur === TOTAL_STEPS) {
+      submitLead();
+      return;
+    }
+    if (cur === TOTAL_STEPS - 1) buildSummary();
+    goTo(cur + 1);
+  });
+
+  document.getElementById('btn-back').addEventListener('click', function() {
+    if (cur > 1) goTo(cur - 1);
+  });
+
+  document.getElementById('btn-new-client').addEventListener('click', function() {
+    data = {name:'',shop:'',city:'',bizType:'',interests:[],budget:'₹3,999',phone:'',email:'',notes:''};
+    document.querySelectorAll('input[type=text],input[type=tel],input[type=email],textarea').forEach(function(el) { el.value = ''; });
+    document.querySelectorAll('.option-card').forEach(function(c) { c.classList.remove('selected'); });
+    document.querySelectorAll('#interest-grid .interest-item').forEach(function(i) { i.classList.remove('selected'); });
+    slider.value = 1;
+    document.getElementById('budget-display').textContent = '₹3,999';
+    document.querySelector('.steps-outer').style.display = 'block';
+    document.getElementById('btn-row').style.display = 'flex';
+    document.querySelector('.progress-wrap').style.display = 'block';
+    document.getElementById('success-screen').classList.remove('show');
+    goTo(1);
+  });
+
+  updateProgress();
+})();
+</script>
+</body>
+</html>

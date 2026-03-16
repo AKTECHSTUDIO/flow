@@ -1,0 +1,495 @@
+{
+  "site": {
+    "brandFirst": "flow",
+    "brandAccent": "matic",
+    "tagline": "Get Your Shop Online",
+    "pageTitle": "Flowmatic — Get Your Shop Online",
+    "metaDescription": "I help small shops and vendors build a website and reach new customers online. No tech knowledge needed.",
+    "faviconUrl": "/img/flowmatic_favicon.png",
+    "ogTitle": "Flowmatic — Get Your Shop Online",
+    "ogDescription": "Website, Google Maps listing and WhatsApp bot for your shop. Done in 3–7 days from ₹3,999.",
+    "ogUrl": "https://flowmaticai.netlify.app"
+  },
+  "colors": {
+    "primary": "#d4522a",
+    "secondary": "#e8a87c",
+    "background": "#faf9f6",
+    "ink": "#0a0a0a"
+  },
+  "nav": {
+    "links": [
+      {
+        "label": "How it works",
+        "href": "#how",
+        "cta": false
+      },
+      {
+        "label": "Services",
+        "href": "pages/services.html",
+        "cta": false
+      },
+      {
+        "label": "Our Work",
+        "href": "pages/portfolio.html",
+        "cta": false
+      },
+      {
+        "label": "About",
+        "href": "#about",
+        "cta": false
+      },
+      {
+        "label": "Get in touch",
+        "href": "#contact",
+        "cta": true
+      }
+    ]
+  },
+  "hero": {
+    "badge": "Now taking new clients",
+    "headlineLine1": "Your shop is great.",
+    "headlineLine2": "found online.",
+    "subheading": "I help small shops, stores, and vendors build a website and reach new customers online — using simple AI tools that work while you focus on your business. No tech knowledge needed at all.",
+    "primaryBtn": "Get my shop online",
+    "secondaryBtn": "See how it works",
+    "pills": [
+      "🛒 Kirana & grocery stores",
+      "👗 Clothing & boutique shops",
+      "🍱 Tiffin & food services",
+      "💆 Salons & parlours",
+      "🛠️ Repair & service shops",
+      "📦 Street & market vendors"
+    ]
+  },
+  "stats": [
+    {
+      "number": "3",
+      "suffix": "–7",
+      "label": "days to get your business live online"
+    },
+    {
+      "number": "₹0",
+      "suffix": " tech",
+      "label": "knowledge required from you"
+    },
+    {
+      "number": "24",
+      "suffix": "/7",
+      "label": "your website works even when you're closed"
+    }
+  ],
+  "howItWorks": {
+    "label": "How it works",
+    "title": "From zero to online in just a few days.",
+    "subtitle": "You focus on your business. I handle every bit of the tech — from start to finish.",
+    "steps": [
+      {
+        "tag": "Day 1",
+        "title": "We have a quick chat",
+        "body": "Tell me about your shop — what you sell, who your customers are, and what you want. No forms or jargon. A simple conversation on WhatsApp or a call is all it takes."
+      },
+      {
+        "tag": "Day 2–5",
+        "title": "I build your presence",
+        "body": "I create your website, set up your Google Business listing so you appear on Maps, and add smart tools like WhatsApp auto-replies — all customised for your shop."
+      },
+      {
+        "tag": "Ongoing",
+        "title": "Customers start finding you",
+        "body": "Your shop is live and visible online 24/7. New customers discover you through Google and your website. I stay available for updates and support whenever you need."
+      }
+    ]
+  },
+  "services": {
+    "label": "Services",
+    "title": "Everything your shop needs to grow online.",
+    "items": [
+      {
+        "icon": "🌐",
+        "title": "A real website for your shop",
+        "body": "A clean, mobile-friendly site showing your products, services, location, timings, and contact details. Looks professional and works on every phone and computer.",
+        "wide": false
+      },
+      {
+        "icon": "📍",
+        "title": "Google Maps & Business listing",
+        "body": "Get found when nearby customers search for what you sell. I set up your full Google Business profile with photos, hours, directions, and reviews — so you rank locally.",
+        "wide": false
+      },
+      {
+        "icon": "💬",
+        "title": "WhatsApp auto-reply bot",
+        "body": "An AI-powered bot that instantly replies to customer messages even at midnight. Answers common questions, shares your menu or price list, and captures enquiries.",
+        "wide": false
+      },
+      {
+        "icon": "📸",
+        "title": "Product & menu showcase",
+        "body": "A beautiful photo gallery or menu page so customers can browse what you offer before they visit or order. Great for food businesses, clothing shops, and service providers.",
+        "wide": false
+      },
+      {
+        "icon": "🤖",
+        "title": "Simple AI automation for your daily tasks",
+        "body": "Small, practical automations that save real time — like sending order confirmations, collecting customer feedback, notifying regulars about new offers, or auto-sorting enquiry messages. Nothing overwhelming. Just tools that genuinely make your workday easier.",
+        "wide": true
+      }
+    ]
+  },
+  "about": {
+    "label": "About",
+    "title": "One person, fully focused on your shop.",
+    "paragraphs": [
+      "Hi, I'm Ashish — the founder of Flowmatic. I started this because I kept seeing great local shops and vendors struggle to reach new customers, simply because they had no online presence.",
+      "A neighbourhood tailor with decades of skill. A street food stall with the best chaat in the area. A kirana store that every local family relies on. All invisible on Google.",
+      "I'm not a big agency. I'm one person who personally builds your website, sets up your Google listing, and makes sure everything works. You'll always talk directly to me — no middlemen, no support tickets, no runaround.",
+      "My mission is simple: take the same online tools that big brands use to reach customers, and bring them to every small shop and vendor in India."
+    ],
+    "values": [
+      {
+        "title": "Fully honest pricing",
+        "desc": "No hidden fees, no confusing contracts. You know exactly what you get and what it costs before we start."
+      },
+      {
+        "title": "Built for real people",
+        "desc": "Everything is simple to understand. You don't need to know anything about tech — that's my job."
+      },
+      {
+        "title": "Always directly reachable",
+        "desc": "Message me on WhatsApp anytime. I reply personally and fix things fast — no waiting around."
+      }
+    ],
+    "founderInitial": "A",
+    "founderHeading": "Hey, I'm Ashish. I built this for shops like yours.",
+    "founderParagraphs": [
+      "I saw that most small shop owners and vendors have no way to tell people online that they even exist — and that feels deeply unfair when they're running a genuinely good business.",
+      "So I decided to do something about it. I build websites and set up AI tools specifically for small, local businesses — at a price that actually makes sense for them.",
+      "If you have a shop and want more customers to discover you, let's have a quick chat. No pressure at all."
+    ],
+    "founderSignature": "— Ashish, Founder of Flowmatic"
+  },
+  "testimonials": {
+    "label": "Happy clients",
+    "title": "From real shop owners just like you.",
+    "items": [
+      {
+        "quote": "\"Ashish built my salon's website in 4 days. Now I get 5–6 new walk-in customers every week just from Google. I didn't have to do anything technical myself.\"",
+        "name": "Pooja Mehta",
+        "business": "Beauty parlour, Ahmedabad",
+        "initial": "P"
+      },
+      {
+        "quote": "\"My tiffin orders doubled after he set up the WhatsApp auto-reply and Google listing. Customers message at night and get an instant reply. It's been a real game changer.\"",
+        "name": "Ramesh Patel",
+        "business": "Home tiffin service, Surat",
+        "initial": "R"
+      },
+      {
+        "quote": "\"I sell handmade clothes and never thought I could have a proper website. Flowmatic made it happen at an affordable price and it looks genuinely professional.\"",
+        "name": "Sunita Joshi",
+        "business": "Handmade clothing shop, Vadodara",
+        "initial": "S"
+      }
+    ]
+  },
+  "pricing": {
+    "label": "Pricing",
+    "title": "Simple, affordable prices for every budget.",
+    "subtitle": "No hidden charges. No long-term lock-ins. Pay once to get online, add monthly care if you need it.",
+    "plans": [
+      {
+        "tier": "Starter",
+        "amount": "3,999",
+        "note": "one-time setup fee",
+        "featured": false,
+        "badge": "",
+        "buttonText": "Get started",
+        "features": [
+          "Single-page website",
+          "Mobile-friendly design",
+          "Google Business listing setup",
+          "Contact & enquiry form",
+          "WhatsApp click-to-chat button"
+        ]
+      },
+      {
+        "tier": "Growth",
+        "amount": "7,999",
+        "note": "one-time setup fee",
+        "featured": true,
+        "badge": "Most popular",
+        "buttonText": "Get started",
+        "features": [
+          "Multi-page website",
+          "Products or menu showcase page",
+          "Google Maps + reviews setup",
+          "WhatsApp AI auto-reply bot",
+          "Basic SEO so Google finds you",
+          "1 month of free support included"
+        ]
+      },
+      {
+        "tier": "Monthly Care",
+        "amount": "999",
+        "note": "per month — add to any plan",
+        "featured": false,
+        "badge": "",
+        "buttonText": "Add to any plan",
+        "features": [
+          "Update products, photos & offers",
+          "Keep Google listing fresh",
+          "Monthly performance check-in",
+          "Priority WhatsApp support"
+        ]
+      }
+    ]
+  },
+  "contact": {
+    "label": "Get in touch",
+    "title": "Ready to get your shop online?",
+    "subtitle": "Fill in a few quick details and I'll personally reach out within 24 hours for a free, no-pressure chat about your business.",
+    "submitBtn": "Send my details — let's talk",
+    "successMessage": "Got it! Ashish will reach out to you personally within 24 hours. Talk soon!",
+    "noteText": "No spam. No sales pitch. Just a friendly conversation about your shop.",
+    "appsScriptUrl": "https://script.google.com/macros/s/AKfycbyNP1dpmsA6EVnOoMRdCaRKEed_tnP-iOIEbdKxLV2jM1WcG2Cz4cb97CySRHWpXpMU/exec"
+  },
+  "footer": {
+    "copyright": "2025 Flowmatic — Built by Ashish, for small businesses across India.",
+    "email": "ashishkushwaha88643@gmail.com",
+    "emailDisplay": "hello@bizautomate.io",
+    "whatsapp": "919773174942"
+  },
+  "portfolio": {
+    "label": "Our Work",
+    "title": "Real shops. Real results.",
+    "subtitle": "Every site below was built for a real small business owner in India — just like yours.",
+    "stats": [
+      {
+        "number": "12+",
+        "label": "shops launched online"
+      },
+      {
+        "number": "3–7",
+        "label": "days average delivery"
+      },
+      {
+        "number": "100%",
+        "label": "clients satisfied"
+      },
+      {
+        "number": "₹0",
+        "label": "tech knowledge required"
+      }
+    ],
+    "projects": [
+      {
+        "id": "1",
+        "emoji": "💆",
+        "tag": "Website",
+        "tagColor": "#d4522a",
+        "title": "Pooja's Beauty Parlour",
+        "biz": "Salon · Ahmedabad",
+        "cats": "website gmaps salon",
+        "tags": [
+          "Website",
+          "Google Maps",
+          "Booking form"
+        ],
+        "result": "5–6 new walk-in customers every week from Google",
+        "plan": "Starter + Google Maps",
+        "time": "4 days",
+        "bg": "linear-gradient(135deg,#fdf4f0,#f9e0d4)"
+      },
+      {
+        "id": "2",
+        "emoji": "🍱",
+        "tag": "WhatsApp Bot",
+        "tagColor": "#25D366",
+        "title": "Ramesh Home Tiffin",
+        "biz": "Tiffin service · Surat",
+        "cats": "website whatsapp food",
+        "tags": [
+          "Website",
+          "WhatsApp bot",
+          "Online menu"
+        ],
+        "result": "Tiffin orders doubled in first month",
+        "plan": "Growth plan",
+        "time": "5 days",
+        "bg": "linear-gradient(135deg,#f0fff4,#d4f7e0)"
+      },
+      {
+        "id": "3",
+        "emoji": "👗",
+        "tag": "Website",
+        "tagColor": "#d4522a",
+        "title": "Sunita Handmade Clothing",
+        "biz": "Boutique · Vadodara",
+        "cats": "website retail",
+        "tags": [
+          "Website",
+          "Product showcase",
+          "WhatsApp order"
+        ],
+        "result": "First online orders within 2 weeks of launch",
+        "plan": "Starter plan",
+        "time": "3 days",
+        "bg": "linear-gradient(135deg,#fdf0ff,#edd4f7)"
+      },
+      {
+        "id": "4",
+        "emoji": "🛒",
+        "tag": "Google Maps",
+        "tagColor": "#1a7a4a",
+        "title": "Mehta Kirana & Grocery",
+        "biz": "Grocery · Rajkot",
+        "cats": "gmaps website retail",
+        "tags": [
+          "Google Maps",
+          "Website",
+          "Reviews setup"
+        ],
+        "result": "Appeared in top 3 local search results in 30 days",
+        "plan": "Starter + Google Maps",
+        "time": "4 days",
+        "bg": "linear-gradient(135deg,#fff8f0,#fde8cc)"
+      },
+      {
+        "id": "5",
+        "emoji": "🍜",
+        "tag": "WhatsApp Bot",
+        "tagColor": "#25D366",
+        "title": "Patel Dhaba & Restaurant",
+        "biz": "Restaurant · Anand",
+        "cats": "whatsapp food gmaps",
+        "tags": [
+          "WhatsApp menu bot",
+          "Google Maps",
+          "Table enquiry"
+        ],
+        "result": "30+ WhatsApp enquiries per week from new customers",
+        "plan": "Growth + WhatsApp Bot",
+        "time": "6 days",
+        "bg": "linear-gradient(135deg,#f0f9ff,#d4eeff)"
+      },
+      {
+        "id": "6",
+        "emoji": "✂️",
+        "tag": "Website",
+        "tagColor": "#d4522a",
+        "title": "Nisha Ladies Salon",
+        "biz": "Salon · Baroda",
+        "cats": "website salon gmaps",
+        "tags": [
+          "Website",
+          "Service menu",
+          "Appointment form"
+        ],
+        "result": "Fully booked weekends for the first time",
+        "plan": "Starter plan",
+        "time": "3 days",
+        "bg": "linear-gradient(135deg,#fff0f5,#ffd4e6)"
+      }
+    ]
+  },
+  "servicesPage": {
+    "heroTitle": "Everything your shop needs to grow online",
+    "heroSubtitle": "Done-for-you digital setup — no tech knowledge needed, no jargon, no surprises.",
+    "services": [
+      {
+        "icon": "🌐",
+        "tag": "Website",
+        "title": "A real website for your shop",
+        "para1": "A clean, fast, mobile-friendly website that shows customers exactly what you offer — products, services, timings, location, and how to reach you.",
+        "para2": "I build it, I upload it, I make sure it works. You just tell me about your shop.",
+        "features": [
+          "Mobile-first design that works on every phone",
+          "Your shop story, services & contact details",
+          "WhatsApp click-to-chat button",
+          "Contact & enquiry form",
+          "Fast-loading on Indian mobile networks"
+        ],
+        "price": "From ₹3,999",
+        "planKey": "Starter"
+      },
+      {
+        "icon": "📍",
+        "tag": "Google Maps",
+        "title": "Google Maps & Business listing",
+        "para1": "When someone nearby searches 'salon near me' or 'kirana store in Maninagar' — your shop should appear. I set up and optimise your Google Business Profile so it does.",
+        "para2": "This single setup can bring you new customers every week for free, with zero ongoing effort from you.",
+        "features": [
+          "Full Google Business Profile setup",
+          "Photos, hours, services & description",
+          "Google Maps pin verified and live",
+          "Review strategy so you rank higher",
+          "Local SEO optimisation"
+        ],
+        "price": "Included in all plans",
+        "planKey": "Google Maps listing"
+      },
+      {
+        "icon": "💬",
+        "tag": "WhatsApp Bot",
+        "title": "WhatsApp auto-reply bot",
+        "para1": "Customers message your shop on WhatsApp at midnight — your bot instantly replies with your menu, prices, timings, or booking details.",
+        "para2": "Never miss a lead again, even when you're asleep or busy serving other customers.",
+        "features": [
+          "Instant auto-replies 24/7",
+          "Shares menu, price list, or services",
+          "Captures name & requirement",
+          "Notifies you of new enquiries",
+          "Easy to update without any coding"
+        ],
+        "price": "Included in Growth plan",
+        "planKey": "Growth"
+      },
+      {
+        "icon": "🤖",
+        "tag": "AI Automation",
+        "title": "Simple AI tools for daily tasks",
+        "para1": "Small automations that actually save you time every day — sending order confirmations, collecting reviews, notifying regulars about new offers.",
+        "para2": "Nothing complicated. Just practical tools that work quietly in the background.",
+        "features": [
+          "Order confirmation messages",
+          "Automated review requests",
+          "New offer notifications",
+          "Enquiry sorting & tagging",
+          "Monthly report on your leads"
+        ],
+        "price": "Add-on from ₹999/mo",
+        "planKey": "AI Automation"
+      }
+    ],
+    "faq": [
+      {
+        "q": "How long does it take to go live?",
+        "a": "Most shops go live within 3–7 days from our first conversation. I handle everything — you just review and approve."
+      },
+      {
+        "q": "Do I need to know anything about technology?",
+        "a": "Zero. You just tell me about your shop in plain language. I handle all the technical work."
+      },
+      {
+        "q": "Can I update the website myself later?",
+        "a": "Yes — or I can do it for you with the Monthly Care plan. Small updates like changing prices or adding photos are included."
+      },
+      {
+        "q": "What if I already have a Google listing?",
+        "a": "Even better — I'll optimise what you already have: add photos, fill in missing information, respond to reviews, and make sure it ranks."
+      },
+      {
+        "q": "Are there any hidden charges?",
+        "a": "None. The price I quote is what you pay. If you need hosting (usually ₹500–1,000/year), I'll tell you upfront."
+      },
+      {
+        "q": "What types of businesses do you work with?",
+        "a": "Any small local business — kirana stores, salons, tiffin services, clothing shops, repair shops, street vendors, pharmacies, coaching classes, and more."
+      }
+    ]
+  },
+  "_admin": {
+    "passwordHash": "97069978a91fcacd37318938638cb75f01485065f8cb02f590993017d69c9037",
+    "hint": "Contact Ashish for admin access"
+  }
+}

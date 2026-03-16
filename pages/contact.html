@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Get in Touch — Flowmatic</title>
+<meta name="description" content="Fill in a few quick details and Ashish will personally reach out within 24 hours."/>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--pop:#d4522a;--pop2:#e8a87c;--ink:#0a0a0a;--ink2:#3a3a3a;--bg:#faf9f6;--bg2:#f2f0eb;--bg3:#e8e5de;--r:12px;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;overflow-x:hidden;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 2.5rem;background:rgba(250,249,246,.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,0,0,.07);}
+.logo{font-family:'Instrument Serif',serif;font-size:1.4rem;text-decoration:none;color:var(--ink);}
+.logo span{color:var(--pop);}
+.nav-back{font-size:.82rem;color:var(--pop);text-decoration:none;font-weight:500;display:flex;align-items:center;gap:.3rem;}
+.nav-back:hover{text-decoration:underline;}
+
+/* PAGE LAYOUT */
+.page-wrap{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;}
+
+/* LEFT PANEL */
+.left-panel{background:var(--ink);color:#fff;padding:7rem 3.5rem 3.5rem;display:flex;flex-direction:column;justify-content:center;position:sticky;top:0;height:100vh;overflow:hidden;}
+.left-panel::before{content:'';position:absolute;top:-80px;right:-80px;width:300px;height:300px;background:var(--pop);opacity:.12;border-radius:50%;pointer-events:none;}
+.left-panel::after{content:'';position:absolute;bottom:-60px;left:-60px;width:200px;height:200px;background:var(--pop2);opacity:.08;border-radius:50%;pointer-events:none;}
+.left-label{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--pop2);margin-bottom:1.25rem;}
+.left-title{font-family:'Instrument Serif',serif;font-size:clamp(2rem,3.5vw,3rem);line-height:1.1;margin-bottom:1.25rem;}
+.left-sub{font-size:.95rem;color:rgba(255,255,255,.55);line-height:1.75;font-weight:300;max-width:400px;margin-bottom:2.5rem;}
+
+/* TRUST POINTS */
+.trust-list{display:grid;gap:.85rem;margin-bottom:2.5rem;}
+.trust-item{display:flex;align-items:flex-start;gap:.75rem;}
+.trust-icon{width:32px;height:32px;background:rgba(255,255,255,.07);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;}
+.trust-text strong{display:block;font-size:.85rem;font-weight:600;margin-bottom:.1rem;}
+.trust-text span{font-size:.78rem;color:rgba(255,255,255,.45);}
+
+/* CONTACT OPTIONS */
+.contact-alts{display:flex;gap:.75rem;flex-wrap:wrap;}
+.contact-alt{display:flex;align-items:center;gap:.5rem;padding:.55rem .9rem;border:1px solid rgba(255,255,255,.15);border-radius:100px;font-size:.78rem;color:rgba(255,255,255,.6);text-decoration:none;transition:all .2s;}
+.contact-alt:hover{border-color:rgba(255,255,255,.4);color:#fff;}
+.contact-alt .ca-icon{font-size:.9rem;}
+
+/* RIGHT PANEL - FORM */
+.right-panel{padding:5.5rem 3.5rem 3.5rem;display:flex;flex-direction:column;justify-content:center;}
+.form-wrap{max-width:460px;}
+.form-head{margin-bottom:2rem;}
+.form-head h2{font-family:'Instrument Serif',serif;font-size:1.6rem;margin-bottom:.35rem;}
+.form-head p{font-size:.85rem;color:#666;line-height:1.6;}
+
+/* PLAN BANNER (shown when arriving from pricing) */
+.plan-banner{display:none;background:#fff3ef;border:1.5px solid var(--pop);border-radius:10px;padding:.75rem 1rem;margin-bottom:1.25rem;font-size:.85rem;color:var(--pop);font-weight:600;display:flex;align-items:center;gap:.5rem;}
+.plan-banner.show{display:flex;}
+.plan-banner-close{margin-left:auto;cursor:pointer;color:var(--pop);opacity:.6;font-size:1rem;background:none;border:none;line-height:1;}
+
+/* FORM FIELDS */
+.f{margin-bottom:.85rem;}
+.f label{display:block;font-size:.72rem;font-weight:600;color:#888;margin-bottom:.35rem;text-transform:uppercase;letter-spacing:.05em;}
+.f input,.f select,.f textarea{width:100%;padding:.8rem 1rem;border:1.5px solid var(--bg3);border-radius:10px;font-size:.9rem;font-family:'DM Sans',sans-serif;background:#fff;color:var(--ink);outline:none;transition:border .2s;}
+.f input:focus,.f select:focus,.f textarea:focus{border-color:var(--pop);}
+.f textarea{resize:none;min-height:80px;line-height:1.5;}
+.f select{appearance:none;cursor:pointer;}
+.f.error input,.f.error select,.f.error textarea{border-color:#e24b4a;}
+.f .err{font-size:.72rem;color:#e24b4a;margin-top:.3rem;display:none;}
+.f.error .err{display:block;}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+
+/* SUBMIT */
+.btn-submit{width:100%;padding:.95rem;border-radius:100px;font-weight:600;font-size:.95rem;cursor:pointer;border:none;background:var(--pop);color:#fff;transition:all .2s;font-family:'DM Sans',sans-serif;margin-top:.5rem;}
+.btn-submit:hover{background:#c0431e;transform:translateY(-1px);}
+.btn-submit:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+.form-note{margin-top:.85rem;font-size:.78rem;color:#aaa;text-align:center;}
+
+/* SUCCESS */
+.success-wrap{display:none;text-align:center;padding:2rem 0;}
+.success-wrap.show{display:block;}
+.success-icon{font-size:3rem;margin-bottom:1rem;}
+.success-title{font-family:'Instrument Serif',serif;font-size:1.6rem;margin-bottom:.5rem;}
+.success-sub{font-size:.9rem;color:#666;line-height:1.6;margin-bottom:2rem;}
+.success-actions{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;}
+.btn-wa{background:#25D366;color:#fff;padding:.8rem 1.5rem;border-radius:100px;font-size:.875rem;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem;}
+.btn-back-home{background:var(--bg2);color:var(--ink);padding:.8rem 1.5rem;border-radius:100px;font-size:.875rem;text-decoration:none;border:1.5px solid var(--bg3);}
+
+/* ERROR MSG */
+#error-msg{display:none;margin-top:.75rem;padding:.75rem 1rem;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;font-size:.82rem;color:#991b1b;}
+
+@media(max-width:768px){
+  nav{padding:.9rem 1.25rem;}
+  .page-wrap{grid-template-columns:1fr;}
+  .left-panel{position:relative;height:auto;padding:5.5rem 1.5rem 2.5rem;}
+  .right-panel{padding:2.5rem 1.5rem 3rem;}
+  .form-wrap{max-width:100%;}
+  .row2{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="logo">flow<span>matic</span></a>
+  <a href="javascript:history.back()" class="nav-back">← Back</a>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- LEFT: Why contact -->
+  <div class="left-panel">
+    <div class="left-label">Get in touch</div>
+    <div class="left-title">Let's get your<br>shop online.</div>
+    <div class="left-sub">Fill in a few quick details and Ashish will personally reach out within 24 hours for a free, no-pressure chat.</div>
+
+    <div class="trust-list">
+      <div class="trust-item">
+        <div class="trust-icon">⚡</div>
+        <div class="trust-text">
+          <strong>Reply within 24 hours</strong>
+          <span>Ashish personally responds to every enquiry</span>
+        </div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">💰</div>
+        <div class="trust-text">
+          <strong>No hidden charges</strong>
+          <span>The price you're quoted is what you pay</span>
+        </div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">🛠️</div>
+        <div class="trust-text">
+          <strong>Live in 3–7 days</strong>
+          <span>Most shops go online within a week</span>
+        </div>
+      </div>
+      <div class="trust-item">
+        <div class="trust-icon">📱</div>
+        <div class="trust-text">
+          <strong>Zero tech knowledge needed</strong>
+          <span>Just tell me about your shop in plain language</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-alts">
+      <a href="https://wa.me/919773174942" class="contact-alt" target="_blank">
+        <span class="ca-icon">💬</span> WhatsApp directly
+      </a>
+      <a href="mailto:ashishkushwaha88643@gmail.com" class="contact-alt">
+        <span class="ca-icon">✉️</span> hello@bizautomate.io
+      </a>
+    </div>
+  </div>
+
+  <!-- RIGHT: Form -->
+  <div class="right-panel">
+    <div class="form-wrap">
+      <div class="form-head">
+        <h2>Send your details</h2>
+        <p>Takes under 2 minutes. No commitment required.</p>
+      </div>
+
+      <!-- Plan banner (shown when arriving from a pricing button) -->
+      <div class="plan-banner" id="plan-banner">
+        <span>🎯</span>
+        <span id="plan-banner-text">Interested in a plan</span>
+        <button class="plan-banner-close" id="plan-banner-close" title="Clear">&times;</button>
+      </div>
+
+      <!-- Form -->
+      <div id="contact-form">
+        <div class="row2">
+          <div class="f" id="f-name">
+            <label>Your name</label>
+            <input type="text" id="inp-name" placeholder="Ramesh Sharma" autocomplete="name"/>
+            <div class="err">Please enter your name</div>
+          </div>
+          <div class="f" id="f-phone">
+            <label>WhatsApp number</label>
+            <input type="tel" id="inp-phone" placeholder="+91 98765 43210" autocomplete="tel"/>
+            <div class="err">Please enter a valid number</div>
+          </div>
+        </div>
+        <div class="f" id="f-email">
+          <label>Email address</label>
+          <input type="email" id="inp-email" placeholder="you@example.com" autocomplete="email"/>
+          <div class="err">Please enter a valid email</div>
+        </div>
+        <div class="f" id="f-business">
+          <label>Shop / Business name</label>
+          <input type="text" id="inp-business" placeholder="e.g. Sharma Kirana Store"/>
+          <div class="err">Please enter your business name</div>
+        </div>
+        <div class="row2">
+          <div class="f" id="f-type">
+            <label>Type of business</label>
+            <select id="inp-type">
+              <option value="" disabled selected>Select type</option>
+              <option>Kirana / Grocery store</option>
+              <option>Clothing / Boutique</option>
+              <option>Tiffin / Food service</option>
+              <option>Salon / Parlour</option>
+              <option>Repair / Service shop</option>
+              <option>Street / Market vendor</option>
+              <option>Pharmacy / Medical</option>
+              <option>Stationery / Books</option>
+              <option>Other</option>
+            </select>
+            <div class="err">Please select your type</div>
+          </div>
+          <div class="f" id="f-city">
+            <label>City / Area</label>
+            <input type="text" id="inp-city" placeholder="e.g. Ahmedabad"/>
+            <div class="err">Please enter your city</div>
+          </div>
+        </div>
+        <div class="f">
+          <label>Anything else? (optional)</label>
+          <textarea id="inp-msg" placeholder="Tell me about your shop or what you need..."></textarea>
+        </div>
+        <button class="btn-submit" id="submit-btn" onclick="submitForm()">Send my details — let's talk →</button>
+        <div id="error-msg">Something went wrong. Please WhatsApp or email directly.</div>
+        <div class="form-note">No spam. No sales pitch. Just a friendly chat about your shop.</div>
+      </div>
+
+      <!-- Success state -->
+      <div class="success-wrap" id="success-wrap">
+        <div class="success-icon">✓</div>
+        <div class="success-title">Got it!</div>
+        <div class="success-sub">Ashish will reach out personally within 24 hours. In the meantime, feel free to WhatsApp directly.</div>
+        <div class="success-actions">
+          <a href="https://wa.me/919773174942" class="btn-wa" target="_blank">💬 WhatsApp Ashish</a>
+          <a href="../index.html" class="btn-back-home">← Back to home</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- page-wrap -->
+
+<script>
+var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyNP1dpmsA6EVnOoMRdCaRKEed_tnP-iOIEbdKxLV2jM1WcG2Cz4cb97CySRHWpXpMU/exec';
+
+// ── READ QUERY PARAM: ?plan=Growth+—+₹7,999 ──────────────
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  var plan = params.get('plan');
+  var msg  = params.get('msg');
+  if (plan) {
+    var banner = document.getElementById('plan-banner');
+    var bannerText = document.getElementById('plan-banner-text');
+    bannerText.textContent = 'Interested in: ' + decodeURIComponent(plan);
+    banner.classList.add('show');
+    var msgField = document.getElementById('inp-msg');
+    if (msgField) msgField.value = 'I am interested in the ' + decodeURIComponent(plan) + ' plan.';
+  }
+  if (msg) {
+    var msgField = document.getElementById('inp-msg');
+    if (msgField) msgField.value = decodeURIComponent(msg);
+  }
+})();
+
+document.getElementById('plan-banner-close').addEventListener('click', function() {
+  document.getElementById('plan-banner').classList.remove('show');
+  document.getElementById('inp-msg').value = '';
+});
+
+// ── VALIDATE & SUBMIT ────────────────────────────────────
+function submitForm() {
+  var btn = document.getElementById('submit-btn');
+  document.getElementById('error-msg').style.display = 'none';
+  var ok = true;
+
+  function chk(inputId, fieldId, test) {
+    var val = document.getElementById(inputId).value.trim();
+    var field = document.getElementById(fieldId);
+    if (!test(val)) { field.classList.add('error'); ok = false; }
+    else field.classList.remove('error');
+    return val;
+  }
+
+  var name     = chk('inp-name',     'f-name',     function(v){ return v.length > 0; });
+  var phone    = chk('inp-phone',    'f-phone',    function(v){ return v.length >= 7; });
+  var email    = chk('inp-email',    'f-email',    function(v){ return v.indexOf('@') > 0; });
+  var business = chk('inp-business', 'f-business', function(v){ return v.length > 0; });
+  var type     = chk('inp-type',     'f-type',     function(v){ return v.length > 0; });
+  var city     = chk('inp-city',     'f-city',     function(v){ return v.length > 0; });
+  if (!ok) return;
+
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+
+  fetch(APPS_SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name: name, phone: phone, email: email,
+      business: business, type: type, city: city,
+      message: document.getElementById('inp-msg').value.trim(),
+      contact: phone + ' / ' + email,
+      source: 'contact-page'
+    })
+  })
+  .then(function() {
+    document.getElementById('contact-form').style.display = 'none';
+    document.getElementById('success-wrap').classList.add('show');
+  })
+  .catch(function() {
+    btn.disabled = false;
+    btn.textContent = "Send my details — let's talk →";
+    document.getElementById('error-msg').style.display = 'block';
+  });
+}
+</script>
+</body>
+</html>

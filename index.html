@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<!-- Meta tags injected by JS from content.json -->
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--ink:#0a0a0a;--ink2:#3a3a3a;--ink3:#888;--bg:#faf9f6;--bg2:#f2f0eb;--bg3:#e8e5de;--pop:#d4522a;--pop2:#e8a87c;--card:#fff;--r:12px;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;}
+
+/* Loading screen */
+#loading{position:fixed;inset:0;background:#faf9f6;display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity .4s;}
+#loading.hidden{opacity:0;pointer-events:none;}
+.loading-logo{font-family:'Instrument Serif',serif;font-size:1.8rem;color:#0a0a0a;}
+.loading-logo span{color:#d4522a;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.1rem 3rem;background:rgba(250,249,246,0.88);backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,0,0,0.07);}
+.logo{font-family:'Instrument Serif',serif;font-size:1.5rem;letter-spacing:-0.02em;color:var(--ink);text-decoration:none;}
+.logo span{color:var(--pop);}
+nav ul{list-style:none;display:flex;gap:2.5rem;}
+nav ul a{text-decoration:none;font-size:.875rem;font-weight:500;color:var(--ink2);transition:color .2s;}
+nav ul a:hover{color:var(--pop);}
+.nav-cta{background:var(--ink);color:#fff!important;padding:.55rem 1.4rem;border-radius:100px;transition:background .2s!important;}
+.nav-cta:hover{background:var(--pop)!important;}
+
+#hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:8rem 2rem 4rem;position:relative;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 20%,#ffe8de 0%,transparent 70%);pointer-events:none;}
+.badge{display:inline-flex;align-items:center;gap:.5rem;background:var(--bg2);border:1px solid var(--bg3);border-radius:100px;padding:.4rem 1rem;font-size:.8rem;font-weight:500;color:var(--ink2);margin-bottom:2rem;}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--pop);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.3)}}
+h1{font-family:'Instrument Serif',serif;font-size:clamp(2.8rem,7vw,5.5rem);line-height:1.05;letter-spacing:-.03em;color:var(--ink);max-width:900px;margin-bottom:1.5rem;}
+h1 em{font-style:italic;color:var(--pop);}
+.hero-sub{font-size:1.1rem;color:var(--ink2);max-width:540px;line-height:1.75;margin-bottom:3rem;font-weight:300;}
+.hero-actions{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;}
+.btn-primary{background:var(--ink);color:#fff;padding:.85rem 2rem;border-radius:100px;font-weight:600;font-size:.95rem;cursor:pointer;border:none;transition:all .2s;text-decoration:none;display:inline-block;}
+.btn-primary:hover{background:var(--pop);transform:translateY(-1px);}
+.btn-ghost{background:transparent;color:var(--ink);padding:.85rem 2rem;border-radius:100px;font-weight:500;font-size:.95rem;cursor:pointer;border:1.5px solid var(--bg3);transition:all .2s;text-decoration:none;display:inline-block;}
+.btn-ghost:hover{border-color:var(--ink);background:var(--bg2);}
+.biz-pills-wrap{margin-top:4rem;display:flex;flex-direction:column;align-items:center;gap:1.2rem;}
+.biz-pills-wrap p{font-size:.78rem;color:var(--ink3);letter-spacing:.07em;text-transform:uppercase;}
+.biz-row{display:flex;gap:.75rem;flex-wrap:wrap;justify-content:center;}
+.biz-pill{background:var(--bg2);border:1px solid var(--bg3);border-radius:100px;padding:.35rem .9rem;font-size:.8rem;font-weight:500;color:var(--ink2);}
+
+#stats{background:var(--ink);color:#fff;padding:4rem 3rem;display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;text-align:center;}
+.stat-num{font-family:'Instrument Serif',serif;font-size:3.5rem;letter-spacing:-.03em;}
+.stat-num span{color:var(--pop2);}
+.stat-label{font-size:.875rem;color:rgba(255,255,255,.5);margin-top:.3rem;}
+
+section{padding:6rem 3rem;}
+.section-label{font-size:.75rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--pop);margin-bottom:1rem;}
+.section-title{font-family:'Instrument Serif',serif;font-size:clamp(2rem,4vw,3rem);line-height:1.1;letter-spacing:-.03em;margin-bottom:1rem;}
+.section-sub{color:var(--ink2);line-height:1.7;max-width:500px;font-weight:300;font-size:1rem;}
+
+#how{background:var(--bg);}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:4rem;}
+.step{padding:2.5rem;background:var(--card);border-radius:var(--r);border:1px solid var(--bg3);position:relative;}
+.step-num{font-family:'Instrument Serif',serif;font-size:4rem;color:var(--bg3);line-height:1;margin-bottom:.5rem;}
+.step h3{font-size:1.1rem;font-weight:600;margin-bottom:.6rem;}
+.step p{font-size:.9rem;color:var(--ink2);line-height:1.6;font-weight:300;}
+.step-tag{display:inline-block;background:var(--pop);color:#fff;font-size:.7rem;font-weight:600;padding:.25rem .75rem;border-radius:100px;position:absolute;top:1.5rem;right:1.5rem;}
+
+#features{background:var(--bg2);}
+.features-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:4rem;}
+.feature-card{background:var(--card);border-radius:var(--r);border:1px solid var(--bg3);padding:2.5rem;transition:transform .2s,box-shadow .2s;}
+.feature-card:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.07);}
+.feature-card.wide{grid-column:span 2;}
+.feature-icon{width:44px;height:44px;background:var(--pop);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;font-size:1.2rem;}
+.feature-card h3{font-size:1.1rem;font-weight:600;margin-bottom:.6rem;}
+.feature-card p{font-size:.9rem;color:var(--ink2);line-height:1.6;font-weight:300;}
+
+#about{background:var(--bg);}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;margin-top:4rem;}
+.about-visual{background:var(--ink);border-radius:var(--r);padding:3rem;color:#fff;position:relative;overflow:hidden;}
+.about-visual::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:var(--pop);opacity:.15;border-radius:50%;}
+.founder-initials{width:72px;height:72px;border-radius:50%;background:var(--pop);display:flex;align-items:center;justify-content:center;font-family:'Instrument Serif',serif;font-size:2rem;color:#fff;margin-bottom:1.5rem;}
+.about-visual h3{font-family:'Instrument Serif',serif;font-size:1.6rem;line-height:1.25;margin-bottom:.75rem;}
+.about-visual p{font-size:.9rem;line-height:1.75;color:rgba(255,255,255,.7);font-weight:300;margin-bottom:.75rem;}
+.founder-sig{font-family:'Instrument Serif',serif;font-style:italic;color:var(--pop2);font-size:1.1rem;margin-top:1.5rem;}
+.about-text p{color:var(--ink2);line-height:1.75;font-weight:300;font-size:1rem;margin-top:1rem;}
+.values{display:grid;gap:1rem;margin-top:2rem;}
+.value{display:flex;gap:1rem;align-items:flex-start;}
+.value-dot{width:8px;height:8px;border-radius:50%;background:var(--pop2);flex-shrink:0;margin-top:.45rem;}
+.value h4{font-size:.9rem;font-weight:600;margin-bottom:.2rem;}
+.value p{font-size:.85rem;color:var(--ink2);font-weight:300;line-height:1.5;}
+
+#testimonials{background:var(--bg2);}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:4rem;}
+.testi-card{background:var(--card);border-radius:var(--r);border:1px solid var(--bg3);padding:2rem;}
+.testi-quote{font-size:.92rem;color:var(--ink2);line-height:1.75;font-weight:300;font-style:italic;margin-bottom:1.25rem;}
+.testi-author{display:flex;align-items:center;gap:.75rem;}
+.testi-av{width:40px;height:40px;border-radius:50%;background:var(--bg2);border:1px solid var(--bg3);display:flex;align-items:center;justify-content:center;font-family:'Instrument Serif',serif;font-size:1rem;color:var(--pop);}
+.testi-name{font-size:.875rem;font-weight:600;}
+.testi-biz{font-size:.78rem;color:var(--ink3);}
+
+#pricing{background:var(--bg);}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:4rem;}
+.price-card{background:var(--card);border-radius:var(--r);border:1px solid var(--bg3);padding:2.5rem;}
+.price-card.featured{border:2px solid var(--pop);background:var(--ink);color:#fff;}
+.price-badge{display:inline-block;background:var(--pop);color:#fff;font-size:.7rem;font-weight:600;padding:.25rem .75rem;border-radius:100px;margin-bottom:1.25rem;}
+.price-tier{font-size:.8rem;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.5rem;}
+.price-card.featured .price-tier{color:rgba(255,255,255,.45);}
+.price-amount{font-family:'Instrument Serif',serif;font-size:2.75rem;letter-spacing:-.03em;line-height:1;margin-bottom:.3rem;}
+.price-card.featured .price-amount{color:#fff;}
+.price-note{font-size:.8rem;color:var(--ink3);margin-bottom:1.75rem;}
+.price-card.featured .price-note{color:rgba(255,255,255,.4);}
+.price-list{list-style:none;display:grid;gap:.7rem;margin-bottom:2rem;}
+.price-list li{font-size:.875rem;color:var(--ink2);display:flex;gap:.6rem;align-items:flex-start;line-height:1.45;}
+.price-card.featured .price-list li{color:rgba(255,255,255,.75);}
+.price-list li::before{content:'✓';color:var(--pop);font-weight:700;flex-shrink:0;}
+.price-card.featured .price-list li::before{color:var(--pop2);}
+.price-btn{width:100%;padding:.8rem;border-radius:100px;font-weight:600;font-size:.9rem;cursor:pointer;border:1.5px solid var(--bg3);background:transparent;color:var(--ink);transition:all .2s;font-family:'DM Sans',sans-serif;}
+.price-btn:hover{background:var(--bg2);border-color:var(--ink);}
+.price-card.featured .price-btn{background:var(--pop);color:#fff;border-color:var(--pop);}
+.price-card.featured .price-btn:hover{background:#c0431e;}
+
+#contact{background:var(--ink);color:#fff;text-align:center;padding:7rem 3rem;position:relative;overflow:hidden;}
+#contact::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(212,82,42,.2) 0%,transparent 70%);pointer-events:none;}
+#contact .section-label{color:var(--pop2);}
+#contact .section-title{color:#fff;max-width:600px;margin:0 auto 1rem;}
+#contact .section-sub{color:rgba(255,255,255,.5);margin:0 auto 3rem;max-width:460px;}
+.contact-form-full{max-width:540px;margin:0 auto;display:grid;gap:.85rem;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;}
+.form-field{display:flex;flex-direction:column;gap:.35rem;}
+.form-field label{font-size:.78rem;font-weight:500;color:rgba(255,255,255,.45);letter-spacing:.05em;text-transform:uppercase;text-align:left;}
+.form-field input,.form-field select,.form-field textarea{width:100%;padding:.85rem 1.15rem;border-radius:10px;border:1.5px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);color:#fff;font-size:.92rem;font-family:'DM Sans',sans-serif;outline:none;transition:border .2s;resize:none;}
+.form-field input:focus,.form-field select:focus,.form-field textarea:focus{border-color:var(--pop2);}
+.form-field select{appearance:none;cursor:pointer;}
+.form-field select option{background:#1a1a1a;color:#fff;}
+.form-field.error input,.form-field.error select,.form-field.error textarea{border-color:#e24b4a;}
+.form-field .field-err{font-size:.75rem;color:#e8a87c;display:none;text-align:left;}
+.form-field.error .field-err{display:block;}
+.btn-send-full{width:100%;padding:.95rem;border-radius:100px;font-weight:600;font-size:.95rem;cursor:pointer;border:none;background:var(--pop);color:#fff;transition:all .2s;font-family:'DM Sans',sans-serif;margin-top:.4rem;}
+.btn-send-full:hover{background:#c0431e;transform:translateY(-1px);}
+.btn-send-full:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+.contact-note{margin-top:1.25rem;font-size:.82rem;color:rgba(255,255,255,.3);}
+.success-msg{display:none;padding:1.5rem 2rem;background:rgba(26,122,74,.2);border:1px solid rgba(26,122,74,.4);border-radius:var(--r);color:#6fdc9e;font-size:.95rem;margin-top:1rem;max-width:480px;margin-left:auto;margin-right:auto;}
+
+footer{background:#050505;color:rgba(255,255,255,.35);padding:2.5rem 3rem;display:flex;align-items:center;justify-content:space-between;font-size:.8rem;flex-wrap:wrap;gap:1rem;}
+footer .logo{font-family:'Instrument Serif',serif;color:rgba(255,255,255,.6);font-size:1.1rem;text-decoration:none;}
+footer .logo span{color:var(--pop);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fadeUp .7s ease both;}
+.fade-up-2{animation:fadeUp .7s .15s ease both;}
+.fade-up-3{animation:fadeUp .7s .3s ease both;}
+
+@media(max-width:768px){
+  nav{padding:1rem 1.5rem;}nav ul{display:none;}
+  #stats{grid-template-columns:1fr;padding:3rem 1.5rem;}
+  section{padding:4rem 1.5rem;}
+  .steps,.features-grid,.about-grid,.testi-grid,.pricing-grid{grid-template-columns:1fr;}
+  .feature-card.wide{grid-column:span 1;}
+  h1{font-size:2.4rem;}
+  .form-row{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div id="loading"><div class="loading-logo">flow<span>matic</span></div></div>
+
+<!-- All HTML is injected by JS below -->
+<div id="app"></div>
+
+<script>
+(function() {
+
+function escHtml(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function applyColors(c) {
+  var r = document.documentElement.style;
+  r.setProperty('--pop',  c.primary);
+  r.setProperty('--pop2', c.secondary);
+  r.setProperty('--bg',   c.background);
+  r.setProperty('--ink',  c.ink);
+}
+
+function applyMeta(site) {
+  document.title = site.pageTitle;
+  function setMeta(name, val, prop) {
+    var el = document.querySelector(prop ? '[property="'+name+'"]' : '[name="'+name+'"]');
+    if (!el) { el = document.createElement('meta'); el[prop?'setAttribute':'setAttribute'](prop?'property':'name', name); document.head.appendChild(el); }
+    el.setAttribute('content', val);
+  }
+  setMeta('description', site.metaDescription, false);
+  setMeta('og:title', site.ogTitle, true);
+  setMeta('og:description', site.ogDescription, true);
+  setMeta('og:url', site.ogUrl, true);
+  setMeta('og:type', 'website', true);
+  setMeta('twitter:card', 'summary_large_image', false);
+  if (site.faviconUrl) {
+    var fav = document.querySelector('link[rel="shortcut icon"]') || document.createElement('link');
+    fav.rel = 'shortcut icon'; fav.href = site.faviconUrl;
+    document.head.appendChild(fav);
+  }
+}
+
+function buildNav(d) {
+  var links = (d.nav.links || []).map(function(l) {
+    return '<li><a href="' + escHtml(l.href) + '"' + (l.cta ? ' class="nav-cta"' : '') + '>' + escHtml(l.label) + '</a></li>';
+  }).join('');
+  return '<nav><a href="/" class="logo">' + escHtml(d.site.brandFirst) + '<span>' + escHtml(d.site.brandAccent) + '</span></a><ul>' + links + '</ul></nav>';
+}
+
+function buildHero(d) {
+  var h = d.hero;
+  var pills = (h.pills || []).map(function(p) { return '<div class="biz-pill">' + escHtml(p) + '</div>'; }).join('');
+  return '<section id="hero">' +
+    '<div class="hero-bg"></div>' +
+    '<div class="badge fade-up"><span class="badge-dot"></span>' + escHtml(h.badge) + '</div>' +
+    '<h1 class="fade-up-2">' + escHtml(h.headlineLine1) + '<br>Now let\'s get it <em>' + escHtml(h.headlineLine2) + '</em></h1>' +
+    '<p class="hero-sub fade-up-3">' + escHtml(h.subheading) + '</p>' +
+    '<div class="hero-actions fade-up-3">' +
+    '<button class="btn-primary" onclick="scrollTo(\'contact\')">' + escHtml(h.primaryBtn) + '</button>' +
+    '<button class="btn-ghost" onclick="scrollTo(\'how\')">' + escHtml(h.secondaryBtn) + '</button>' +
+    '<a href="pages/onboard.html" class="btn-ghost" style="font-size:.85rem;">📋 Quick client intake</a>' +
+    '</div>' +
+    '<div class="biz-pills-wrap"><p>Perfect for</p><div class="biz-row">' + pills + '</div></div>' +
+    '</section>';
+}
+
+function buildStats(stats) {
+  var items = stats.map(function(s) {
+    return '<div><div class="stat-num">' + escHtml(s.number) + '<span>' + escHtml(s.suffix) + '</span></div><div class="stat-label">' + escHtml(s.label) + '</div></div>';
+  }).join('');
+  return '<div id="stats">' + items + '</div>';
+}
+
+function buildHow(d) {
+  var h = d.howItWorks;
+  var steps = (h.steps || []).map(function(s, i) {
+    return '<div class="step"><div class="step-num">0' + (i+1) + '</div><div class="step-tag">' + escHtml(s.tag) + '</div><h3>' + escHtml(s.title) + '</h3><p>' + escHtml(s.body) + '</p></div>';
+  }).join('');
+  return '<section id="how"><div class="section-label">' + escHtml(h.label) + '</div>' +
+    '<div class="section-title">' + escHtml(h.title) + '</div>' +
+    '<p class="section-sub">' + escHtml(h.subtitle) + '</p>' +
+    '<div class="steps">' + steps + '</div></section>';
+}
+
+function buildServices(d) {
+  var s = d.services;
+  var items = (s.items || []).map(function(f) {
+    return '<div class="feature-card' + (f.wide ? ' wide' : '') + '"><div class="feature-icon">' + f.icon + '</div><h3>' + escHtml(f.title) + '</h3><p>' + escHtml(f.body) + '</p></div>';
+  }).join('');
+  return '<section id="features"><div class="section-label">' + escHtml(s.label) + '</div>' +
+    '<div class="section-title">' + escHtml(s.title) + '</div>' +
+    '<div class="features-grid">' + items + '</div>' +
+    '<div style="margin-top:2rem;text-align:center;"><a href="pages/services.html" style="display:inline-block;color:var(--pop);font-size:.875rem;font-weight:600;text-decoration:none;">See full services breakdown →</a></div>' +
+    '</section>';
+}
+
+function buildAbout(d) {
+  var a = d.about;
+  var paras = (a.paragraphs || []).map(function(p) { return '<p>' + escHtml(p) + '</p>'; }).join('');
+  var vals  = (a.values || []).map(function(v) {
+    return '<div class="value"><div class="value-dot"></div><div><h4>' + escHtml(v.title) + '</h4><p>' + escHtml(v.desc) + '</p></div></div>';
+  }).join('');
+  var fParas = (a.founderParagraphs || []).map(function(p) { return '<p>' + escHtml(p) + '</p>'; }).join('');
+  return '<section id="about"><div class="section-label">' + escHtml(a.label) + '</div>' +
+    '<div class="about-grid">' +
+    '<div class="about-text"><div class="section-title">' + escHtml(a.title) + '</div>' + paras +
+    '<div class="values">' + vals + '</div></div>' +
+    '<div class="about-visual"><div class="founder-initials">' + escHtml(a.founderInitial) + '</div>' +
+    '<h3>' + escHtml(a.founderHeading) + '</h3>' + fParas +
+    '<div class="founder-sig">' + escHtml(a.founderSignature) + '</div></div>' +
+    '</div></section>';
+}
+
+function buildTestimonials(d) {
+  var t = d.testimonials;
+  var items = (t.items || []).map(function(item) {
+    return '<div class="testi-card"><div class="testi-quote">' + escHtml(item.quote) + '</div>' +
+      '<div class="testi-author"><div class="testi-av">' + escHtml(item.initial) + '</div>' +
+      '<div><div class="testi-name">' + escHtml(item.name) + '</div>' +
+      '<div class="testi-biz">' + escHtml(item.business) + '</div></div></div></div>';
+  }).join('');
+  return '<section id="testimonials">' +
+    '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1rem;">' +
+    '<div class="section-label" style="margin-bottom:0;">' + escHtml(t.label) + '</div>' +
+    '<a href="pages/portfolio.html" style="font-size:.8rem;color:var(--pop);text-decoration:none;font-weight:600;">See all our work →</a></div>' +
+    '<div class="section-title">' + escHtml(t.title) + '</div>' +
+    '<div class="testi-grid">' + items + '</div></section>';
+}
+
+function buildPricing(d) {
+  var pr = d.pricing;
+  var plans = (pr.plans || []).map(function(p) {
+    var badge = p.badge ? '<div class="price-badge">' + escHtml(p.badge) + '</div>' : '';
+    var feats = (p.features || []).map(function(f) { return '<li>' + escHtml(f) + '</li>'; }).join('');
+    var planLabel = escHtml(p.tier) + ' — ₹' + escHtml(p.amount) + (p.note.indexOf('month') >= 0 ? '/month' : ' one-time');
+    return '<div class="price-card' + (p.featured ? ' featured' : '') + '">' + badge +
+      '<div class="price-tier">' + escHtml(p.tier) + '</div>' +
+      '<div class="price-amount">₹' + escHtml(p.amount) + '</div>' +
+      '<div class="price-note">' + escHtml(p.note) + '</div>' +
+      '<ul class="price-list">' + feats + '</ul>' +
+      '<button class="price-btn" onclick="selectPlan(\'' + planLabel + '\')">' + escHtml(p.buttonText) + '</button>' +
+      '</div>';
+  }).join('');
+  return '<section id="pricing"><div class="section-label">' + escHtml(pr.label) + '</div>' +
+    '<div class="section-title">' + escHtml(pr.title) + '</div>' +
+    '<p class="section-sub">' + escHtml(pr.subtitle) + '</p>' +
+    '<div class="pricing-grid">' + plans + '</div></section>';
+}
+
+function buildContact(d) {
+  var c = d.contact;
+  return '<section id="contact"><div class="section-label">' + escHtml(c.label) + '</div>' +
+    '<div class="section-title">' + escHtml(c.title) + '</div>' +
+    '<p class="section-sub">' + escHtml(c.subtitle) + '</p>' +
+    '<div class="contact-form-full" id="contact-form-full">' +
+    '<div class="form-row">' +
+    '<div class="form-field" id="field-name"><label>Your name</label><input type="text" id="inp-name" placeholder="Ashish Kumar"/><span class="field-err">Please enter your name</span></div>' +
+    '<div class="form-field" id="field-phone"><label>WhatsApp number</label><input type="tel" id="inp-phone" placeholder="+91 98765 43210"/><span class="field-err">Please enter your number</span></div>' +
+    '</div>' +
+    '<div class="form-field" id="field-email"><label>Email address</label><input type="email" id="inp-email" placeholder="you@example.com"/><span class="field-err">Please enter a valid email</span></div>' +
+    '<div class="form-field" id="field-business"><label>Business / shop name</label><input type="text" id="inp-business" placeholder="e.g. Sharma Kirana Store"/><span class="field-err">Please enter your business name</span></div>' +
+    '<div class="form-row">' +
+    '<div class="form-field" id="field-type"><label>Type of business</label><select id="inp-type"><option value="" disabled selected>Select your type</option><option>Kirana / Grocery store</option><option>Clothing / Boutique</option><option>Tiffin / Food service</option><option>Salon / Parlour</option><option>Repair / Service shop</option><option>Street / Market vendor</option><option>Pharmacy / Medical</option><option>Stationery / Books</option><option>Other</option></select><span class="field-err">Please select your business type</span></div>' +
+    '<div class="form-field" id="field-city"><label>City / Area</label><input type="text" id="inp-city" placeholder="e.g. Ahmedabad, Gujarat"/><span class="field-err">Please enter your city</span></div>' +
+    '</div>' +
+    '<div class="form-field"><label>Anything else? (optional)</label><textarea id="inp-msg" rows="3" placeholder="Tell me a little about your shop..."></textarea></div>' +
+    '<button class="btn-send-full" id="submit-btn" onclick="submitContact()">' + escHtml(c.submitBtn) + '</button>' +
+    '</div>' +
+    '<div class="success-msg" id="success-msg">' + escHtml(c.successMessage) + '</div>' +
+    '<div id="error-msg" style="display:none;margin-top:1rem;font-size:.85rem;color:#e8a87c;">Something went wrong. Please try WhatsApp or email directly.</div>' +
+    '<div class="contact-note">' + escHtml(c.noteText) + '</div></section>';
+}
+
+function buildFooter(d) {
+  var f = d.footer;
+  var b1 = escHtml(d.site.brandFirst), b2 = escHtml(d.site.brandAccent);
+  return '<footer>' +
+    '<a href="/" class="logo">' + b1 + '<span>' + b2 + '</span></a>' +
+    '<div>© ' + escHtml(f.copyright) + '</div>' +
+    '<div style="display:flex;gap:1.5rem;">' +
+    '<a href="mailto:' + escHtml(f.email) + '" style="color:rgba(255,255,255,.35);text-decoration:none;">' + escHtml(f.emailDisplay) + '</a>' +
+    '<a href="https://wa.me/' + escHtml(f.whatsapp) + '" style="color:rgba(255,255,255,.35);text-decoration:none;">WhatsApp</a>' +
+    '</div></footer>';
+}
+
+function buildPage(d) {
+  applyMeta(d.site);
+  applyColors(d.colors);
+  var html =
+    buildNav(d) +
+    buildHero(d) +
+    buildStats(d.stats) +
+    buildHow(d) +
+    buildServices(d) +
+    buildAbout(d) +
+    buildTestimonials(d) +
+    buildPricing(d) +
+    buildContact(d) +
+    buildFooter(d);
+  document.getElementById('app').innerHTML = html;
+  initContactForm(d.contact.appsScriptUrl);
+  // Hide loader
+  setTimeout(function() {
+    document.getElementById('loading').classList.add('hidden');
+  }, 100);
+}
+
+function scrollTo(id) {
+  var el = document.getElementById(id);
+  if (el) el.scrollIntoView({behavior:'smooth'});
+}
+window.scrollTo = scrollTo;
+
+// ── SELECT PLAN ──────────────────────────────────────────────
+window.selectPlan = function(plan) {
+  var msg = document.getElementById('inp-msg');
+  if (msg) {
+    msg.value = 'I am interested in the ' + plan + ' plan.';
+    msg.style.borderColor = '#e8a87c';
+    setTimeout(function() { msg.style.borderColor = ''; }, 1800);
+  }
+  var contact = document.getElementById('contact');
+  if (contact) contact.scrollIntoView({behavior:'smooth'});
+  setTimeout(function() {
+    var n = document.getElementById('inp-name');
+    if (n && !n.value.trim()) n.focus(); else if (msg) msg.focus();
+  }, 600);
+};
+
+// ── CONTACT FORM ─────────────────────────────────────────────
+function initContactForm(scriptUrl) {
+  window.submitContact = function() {
+    var btn = document.getElementById('submit-btn');
+    var errMsg = document.getElementById('error-msg');
+    errMsg.style.display = 'none';
+    var ok = true;
+    function chk(id, fid, test) {
+      var val = document.getElementById(id).value.trim();
+      var field = document.getElementById(fid);
+      if (!test(val)) { field.classList.add('error'); ok = false; }
+      else field.classList.remove('error');
+      return val;
+    }
+    var name     = chk('inp-name',     'field-name',     function(v){ return v.length > 0; });
+    var phone    = chk('inp-phone',    'field-phone',    function(v){ return v.length >= 7; });
+    var email    = chk('inp-email',    'field-email',    function(v){ return v.indexOf('@') > 0; });
+    var business = chk('inp-business', 'field-business', function(v){ return v.length > 0; });
+    var type     = chk('inp-type',     'field-type',     function(v){ return v.length > 0; });
+    var city     = chk('inp-city',     'field-city',     function(v){ return v.length > 0; });
+    if (!ok) return;
+    btn.disabled = true; btn.textContent = 'Sending...';
+    fetch(scriptUrl, {
+      method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({name:name,phone:phone,email:email,business:business,type:type,city:city,message:document.getElementById('inp-msg').value.trim(),contact:phone+' / '+email,source:'landing page'})
+    })
+    .then(function(){
+      document.getElementById('contact-form-full').style.display='none';
+      document.getElementById('success-msg').style.display='block';
+    })
+    .catch(function(){
+      btn.disabled=false; btn.textContent='Send my details — let\'s talk';
+      errMsg.style.display='block';
+    });
+  };
+}
+
+// ── CONTENT DATA (embedded from content.json) ────────────────
+// This is updated automatically when you publish from the admin panel.
+// To edit: use /admin, then click Publish — or edit content.json directly.
+var CONTENT_DATA = {
+  "site": {
+    "brandFirst": "flow",
+    "brandAccent": "matic",
+    "tagline": "Get Your Shop Online",
+    "pageTitle": "Flowmatic — Get Your Shop Online",
+    "metaDescription": "I help small shops and vendors build a website and reach new customers online. No tech knowledge needed.",
+    "faviconUrl": "/img/flowmatic_favicon.png",
+    "ogTitle": "Flowmatic — Get Your Shop Online",
+    "ogDescription": "Website, Google Maps listing and WhatsApp bot for your shop. Done in 3–7 days from ₹3,999.",
+    "ogUrl": "https://flowmaticai.netlify.app"
+  },
+  "colors": {
+    "primary": "#d4522a",
+    "secondary": "#e8a87c",
+    "background": "#faf9f6",
+    "ink": "#0a0a0a"
+  },
+  "nav": {
+    "links": [
+      { "label": "How it works", "href": "#how", "cta": false },
+      { "label": "Services",     "href": "pages/services.html", "cta": false },
+      { "label": "Our Work",     "href": "pages/portfolio.html", "cta": false },
+      { "label": "About",        "href": "#about", "cta": false },
+      { "label": "Get in touch", "href": "#contact", "cta": true }
+    ]
+  },
+  "hero": {
+    "badge": "Now taking new clients",
+    "headlineLine1": "Your shop is great.",
+    "headlineLine2": "found online.",
+    "subheading": "I help small shops, stores, and vendors build a website and reach new customers online — using simple AI tools that work while you focus on your business. No tech knowledge needed at all.",
+    "primaryBtn": "Get my shop online",
+    "secondaryBtn": "See how it works",
+    "pills": [
+      "🛒 Kirana & grocery stores",
+      "👗 Clothing & boutique shops",
+      "🍱 Tiffin & food services",
+      "💆 Salons & parlours",
+      "🛠️ Repair & service shops",
+      "📦 Street & market vendors"
+    ]
+  },
+  "stats": [
+    { "number": "3", "suffix": "–7", "label": "days to get your business live online" },
+    { "number": "₹0", "suffix": " tech", "label": "knowledge required from you" },
+    { "number": "24", "suffix": "/7", "label": "your website works even when you're closed" }
+  ],
+  "howItWorks": {
+    "label": "How it works",
+    "title": "From zero to online in just a few days.",
+    "subtitle": "You focus on your business. I handle every bit of the tech — from start to finish.",
+    "steps": [
+      { "tag": "Day 1",   "title": "We have a quick chat",        "body": "Tell me about your shop — what you sell, who your customers are, and what you want. No forms or jargon. A simple conversation on WhatsApp or a call is all it takes." },
+      { "tag": "Day 2–5", "title": "I build your presence",       "body": "I create your website, set up your Google Business listing so you appear on Maps, and add smart tools like WhatsApp auto-replies — all customised for your shop." },
+      { "tag": "Ongoing", "title": "Customers start finding you", "body": "Your shop is live and visible online 24/7. New customers discover you through Google and your website. I stay available for updates and support whenever you need." }
+    ]
+  },
+  "services": {
+    "label": "Services",
+    "title": "Everything your shop needs to grow online.",
+    "items": [
+      { "icon": "🌐", "title": "A real website for your shop",              "body": "A clean, mobile-friendly site showing your products, services, location, timings, and contact details. Looks professional and works on every phone and computer.", "wide": false },
+      { "icon": "📍", "title": "Google Maps & Business listing",            "body": "Get found when nearby customers search for what you sell. I set up your full Google Business profile with photos, hours, directions, and reviews — so you rank locally.", "wide": false },
+      { "icon": "💬", "title": "WhatsApp auto-reply bot",                   "body": "An AI-powered bot that instantly replies to customer messages even at midnight. Answers common questions, shares your menu or price list, and captures enquiries.", "wide": false },
+      { "icon": "📸", "title": "Product & menu showcase",                   "body": "A beautiful photo gallery or menu page so customers can browse what you offer before they visit or order. Great for food businesses, clothing shops, and service providers.", "wide": false },
+      { "icon": "🤖", "title": "Simple AI automation for your daily tasks", "body": "Small, practical automations that save real time — like sending order confirmations, collecting customer feedback, notifying regulars about new offers, or auto-sorting enquiry messages. Nothing overwhelming. Just tools that genuinely make your workday easier.", "wide": true }
+    ]
+  },
+  "about": {
+    "label": "About",
+    "title": "One person, fully focused on your shop.",
+    "paragraphs": [
+      "Hi, I'm Ashish — the founder of Flowmatic. I started this because I kept seeing great local shops and vendors struggle to reach new customers, simply because they had no online presence.",
+      "A neighbourhood tailor with decades of skill. A street food stall with the best chaat in the area. A kirana store that every local family relies on. All invisible on Google.",
+      "I'm not a big agency. I'm one person who personally builds your website, sets up your Google listing, and makes sure everything works. You'll always talk directly to me — no middlemen, no support tickets, no runaround.",
+      "My mission is simple: take the same online tools that big brands use to reach customers, and bring them to every small shop and vendor in India."
+    ],
+    "values": [
+      { "title": "Fully honest pricing",     "desc": "No hidden fees, no confusing contracts. You know exactly what you get and what it costs before we start." },
+      { "title": "Built for real people",    "desc": "Everything is simple to understand. You don't need to know anything about tech — that's my job." },
+      { "title": "Always directly reachable","desc": "Message me on WhatsApp anytime. I reply personally and fix things fast — no waiting around." }
+    ],
+    "founderInitial": "A",
+    "founderHeading": "Hey, I'm Ashish. I built this for shops like yours.",
+    "founderParagraphs": [
+      "I saw that most small shop owners and vendors have no way to tell people online that they even exist — and that feels deeply unfair when they're running a genuinely good business.",
+      "So I decided to do something about it. I build websites and set up AI tools specifically for small, local businesses — at a price that actually makes sense for them.",
+      "If you have a shop and want more customers to discover you, let's have a quick chat. No pressure at all."
+    ],
+    "founderSignature": "— Ashish, Founder of Flowmatic"
+  },
+  "testimonials": {
+    "label": "Happy clients",
+    "title": "From real shop owners just like you.",
+    "items": [
+      { "quote": "\"Ashish built my salon's website in 4 days. Now I get 5–6 new walk-in customers every week just from Google. I didn't have to do anything technical myself.\"", "name": "Pooja Mehta",  "business": "Beauty parlour, Ahmedabad",      "initial": "P" },
+      { "quote": "\"My tiffin orders doubled after he set up the WhatsApp auto-reply and Google listing. Customers message at night and get an instant reply. It's been a real game changer.\"", "name": "Ramesh Patel", "business": "Home tiffin service, Surat",       "initial": "R" },
+      { "quote": "\"I sell handmade clothes and never thought I could have a proper website. Flowmatic made it happen at an affordable price and it looks genuinely professional.\"",        "name": "Sunita Joshi", "business": "Handmade clothing shop, Vadodara", "initial": "S" }
+    ]
+  },
+  "pricing": {
+    "label": "Pricing",
+    "title": "Simple, affordable prices for every budget.",
+    "subtitle": "No hidden charges. No long-term lock-ins. Pay once to get online, add monthly care if you need it.",
+    "plans": [
+      {
+        "tier": "Starter",
+        "amount": "3,999",
+        "note": "one-time setup fee",
+        "featured": false,
+        "badge": "",
+        "buttonText": "Get started",
+        "features": ["Single-page website","Mobile-friendly design","Google Business listing setup","Contact & enquiry form","WhatsApp click-to-chat button"]
+      },
+      {
+        "tier": "Growth",
+        "amount": "7,999",
+        "note": "one-time setup fee",
+        "featured": true,
+        "badge": "Most popular",
+        "buttonText": "Get started",
+        "features": ["Multi-page website","Products or menu showcase page","Google Maps + reviews setup","WhatsApp AI auto-reply bot","Basic SEO so Google finds you","1 month of free support included"]
+      },
+      {
+        "tier": "Monthly Care",
+        "amount": "999",
+        "note": "per month — add to any plan",
+        "featured": false,
+        "badge": "",
+        "buttonText": "Add to any plan",
+        "features": ["Update products, photos & offers","Keep Google listing fresh","Monthly performance check-in","Priority WhatsApp support"]
+      }
+    ]
+  },
+  "contact": {
+    "label": "Get in touch",
+    "title": "Ready to get your shop online?",
+    "subtitle": "Fill in a few quick details and I'll personally reach out within 24 hours for a free, no-pressure chat about your business.",
+    "submitBtn": "Send my details — let's talk",
+    "successMessage": "Got it! Ashish will reach out to you personally within 24 hours. Talk soon!",
+    "noteText": "No spam. No sales pitch. Just a friendly conversation about your shop.",
+    "appsScriptUrl": "https://script.google.com/macros/s/AKfycbyNP1dpmsA6EVnOoMRdCaRKEed_tnP-iOIEbdKxLV2jM1WcG2Cz4cb97CySRHWpXpMU/exec"
+  },
+  "footer": {
+    "copyright": "2025 Flowmatic — Built by Ashish, for small businesses across India.",
+    "email": "ashishkushwaha88643@gmail.com",
+    "emailDisplay": "hello@bizautomate.io",
+    "whatsapp": "919773174942"
+  }
+}
+;
+
+// Try fetching fresh content.json first (for Netlify deploys),
+// fall back to embedded data if fetch fails (works offline / local)
+var fetchFailed = false;
+fetch('content.json?v=' + Date.now())
+  .then(function(r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  })
+  .then(function(data) {
+    buildPage(data);
+  })
+  .catch(function() {
+    // Use embedded data — works even if content.json can't be fetched
+    buildPage(CONTENT_DATA);
+  });
+
+})();
+</script>
+</body>
+</html>
