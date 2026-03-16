@@ -199,7 +199,7 @@
     "plans": [
       {
         "tier": "Starter",
-        "amount": "3,999",
+        "amount": "299",
         "note": "one-time setup fee",
         "featured": false,
         "badge": "",
@@ -214,7 +214,7 @@
       },
       {
         "tier": "Growth",
-        "amount": "7,999",
+        "amount": "499",
         "note": "one-time setup fee",
         "featured": true,
         "badge": "Most popular",
@@ -230,7 +230,7 @@
       },
       {
         "tier": "Monthly Care",
-        "amount": "999",
+        "amount": "199",
         "note": "per month — add to any plan",
         "featured": false,
         "badge": "",
