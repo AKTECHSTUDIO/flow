@@ -285,12 +285,12 @@
     "projects": [
       {
         "id": "1",
-        "emoji": "💆",
+        "emoji": "💪",
         "tag": "Website",
         "tagColor": "#d4522a",
-        "title": "Pooja's Beauty Parlour",
-        "biz": "Salon · Ahmedabad",
-        "cats": "website gmaps salon",
+        "title": "SV Fitness GYM",
+        "biz": "GYM · KIM",
+        "cats": "website gmaps GYM",
         "tags": [
           "Website",
           "Google Maps",
